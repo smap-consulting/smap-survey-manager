@@ -19,16 +19,41 @@ import controller.FormController;
 import controller.JavaRosaException;
 import controller.FormController.InstanceMetadata;
 
+/**
+ * @author Scott Wells
+ *
+ */
+
 public class SurveyModel {
 	private FormController formController;
 	private FormDef formDef;
 	
+	/**
+	 * Construct a suvey model given xform xml
+	 * @param xformFilePath
+	 */
 	public SurveyModel(String xformFilePath){
 		FormDef formDef = createFormDef(xformFilePath);
 		this.formDef=formDef;
 		this.formController = initFormController(formDef);
 		if(!formController.currentPromptIsQuestion())
 			jumpToFirstAnswerableQuestion();
+	}
+	
+	/**Returns an IAnswerData object which can be used to answer the current question
+	 * @return
+	 */
+	public IAnswerData getAnswerContainer(){
+		return AnswerDataFactory.templateByDataType(formController.getQuestionPrompt().getControlType());
+	}
+	
+	public String getPrompt(){
+		if(isQuestionGroup())
+			return getGroupPropmt();
+		if(isRepeatGroupPrompt())
+			return formController.getLastRepeatedGroupName();
+		FormEntryPrompt entryPrompt =  formController.getQuestionPrompt();
+		return entryPrompt.getShortText();
 	}
 	
 	private FormController initFormController(FormDef formDef) {
@@ -58,24 +83,17 @@ public class SurveyModel {
 		return XFormUtils.getFormFromInputStream(inputStream);
 	}
 	
-	public String getPrompt(){
-		if(isQuestionGroup())
-			return getGroupPropmt();
-		FormEntryPrompt entryPrompt =  formController.getQuestionPrompt();
-		return entryPrompt.getShortText();
-	}
-	
 	private void jumpToFirstAnswerableQuestion(){
 		if(!formController.currentPromptIsQuestion())
 			jumpToNextScreenEvent();
 	}
 	
-	private void jumpToNextScreenEvent(){
-		try {
-			formController.stepToNextScreenEvent();
-		} catch (JavaRosaException e) {
-			e.printStackTrace();
-		}
+	
+	/**
+	 *Steps to the next question, will always dive into group questions or repeats 
+	 */
+	public void jumpToNextScreenEvent(){
+			formController.stepToNextEvent(true);
 	}
 	
 	private boolean isQuestionGroup(){
@@ -90,16 +108,18 @@ public class SurveyModel {
 		return false;
 	}
 	
+	private boolean isRepeatGroupPrompt(){
+		if(formController.getEvent()== FormEntryController.EVENT_PROMPT_NEW_REPEAT)
+			return true;
+		return false;
+	}
+	
 	private String getGroupPropmt(){
 		return formController.getLastGroupText();
 	}
 	
-	public IAnswerData getAnswerContainer(){
-		return AnswerDataFactory.templateByDataType(formController.getQuestionPrompt().getControlType());
-	}
 	
 	public void getQuestionInfo(){
-		System.out.println("Prompt: "+getPrompt());
 		System.out.print("Event Type: ");
 		switch(formController.getEvent()){
 		case FormEntryController.EVENT_GROUP:
@@ -108,7 +128,7 @@ public class SurveyModel {
 		case FormEntryController.EVENT_QUESTION:
 			System.out.println("EVENT_QUESTION");
 			IAnswerData answerTemplate = getAnswerContainer();
-			System.out.println(answerTemplate.getClass());
+			System.out.println("QuestionType: "+answerTemplate.getClass());
 			break;	
 		case FormEntryController.EVENT_REPEAT:
 			System.out.println("EVENT_REPEAT");
@@ -120,5 +140,6 @@ public class SurveyModel {
 			System.out.println("EVENT_REPEAT_JUNCTURE");
 			break;
 		}
+		System.out.println("Prompt: "+getPrompt());
 	}
 }

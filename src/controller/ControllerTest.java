@@ -32,11 +32,13 @@ public class ControllerTest {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		String formFilePath = "data/Household Survey.xml";
-		//String formFilePath = "data/Birds.xml";
+		//String formFilePath = "data/Household Survey.xml";
+		String formFilePath = "data/Birds.xml";
 		SurveyModel surveyBot = new SurveyModel(formFilePath);
-		surveyBot.getQuestionInfo();
-		
+		while(true){
+			surveyBot.getQuestionInfo();
+			surveyBot.jumpToNextScreenEvent();
+		}
 		
 		/*
 		// Parse the form
