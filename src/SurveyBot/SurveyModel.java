@@ -7,18 +7,11 @@ import java.io.FileNotFoundException;
 
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
-import org.javarosa.core.model.data.AnswerDataFactory;
-import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.core.services.locale.Localizer;
-import org.javarosa.form.api.FormEntryCaption;
 import org.javarosa.form.api.FormEntryController;
 import org.javarosa.form.api.FormEntryModel;
-import org.javarosa.form.api.FormEntryPrompt;
 import org.javarosa.xform.util.XFormUtils;
-import org.javarosa.core.model.Constants;
 import controller.FormController;
-import controller.JavaRosaException;
-import controller.FormController.InstanceMetadata;
 
 /**
  * @author Scott Wells
@@ -28,6 +21,7 @@ import controller.FormController.InstanceMetadata;
 public class SurveyModel {
 	private FormController formController;
 	private FormDef formDef;
+	private ISurveyEvent currentEvent;
 	
 	/**
 	 * Construct a suvey model given xform xml
@@ -41,20 +35,8 @@ public class SurveyModel {
 			jumpToFirstAnswerableQuestion();
 	}
 	
-	/**Returns an IAnswerData object which can be used to answer the current question
-	 * @return
-	 */
-	public IAnswerData getAnswerContainer(){
-		return AnswerDataFactory.templateByDataType(formController.getQuestionPrompt().getControlType());
-	}
-	
 	public String getPrompt(){
-		if(isGroup())
-			return getGroupPropmt();
-		if(isRepeatPrompt() || isRepeat() || isRepeatGroupJuncture())
-			return formController.getLastRepeatedGroupName();
-		FormEntryPrompt entryPrompt =  formController.getQuestionPrompt();
-		return entryPrompt.getShortText();
+		return currentEvent.getPromptText();
 	}
 	
 	private FormController initFormController(FormDef formDef) {
@@ -87,6 +69,7 @@ public class SurveyModel {
 	private void jumpToFirstAnswerableQuestion(){
 		if(!formController.currentPromptIsQuestion())
 			jumpToNextScreenEvent();
+		setCurrentEvent();
 	}
 	
 	/**
@@ -94,51 +77,44 @@ public class SurveyModel {
 	 */
 	public void jumpToNextScreenEvent(){
 		formController.stepToNextEvent(true);
+		setCurrentEvent();
 	}
 	
-	public boolean isChoiceQuestion(){
-		return formController.getQuestionPrompt().getDataType()==Constants.DATATYPE_CHOICE;
-	}
-	
-	public boolean isMulitChoiceQuestion(){
-		return formController.getQuestionPrompt().getDataType()==Constants.DATATYPE_CHOICE_LIST;
+	private void setCurrentEvent(){
+		if(isGroup())
+			currentEvent=new GroupEvent(formController);
+		else if(isQuestion())
+			currentEvent=new QuestionEvent(formController);
+		else if(isRepeat())
+			currentEvent=new RepeatEvent(formController);
+		else currentEvent=null;
 	}
 	
 	public void stepIntoRepeat(){
 		formController.newRepeat();
+		setCurrentEvent();
 	}
 	
 	private boolean isGroup(){
-		return formController.getEvent()== FormEntryController.EVENT_GROUP;
+		return formController.getEvent() == FormEntryController.EVENT_GROUP;
 	}
 	
 	private boolean isQuestion(){
-		return formController.getEvent()== FormEntryController.EVENT_QUESTION;
+		return formController.getEvent() == FormEntryController.EVENT_QUESTION;
 	}
 
-	
-	private boolean isRepeat(){
-		return formController.getEvent()== FormEntryController.EVENT_REPEAT;
-	}
-	
-	public boolean isRepeatPrompt(){
-		return formController.getEvent()== FormEntryController.EVENT_PROMPT_NEW_REPEAT;
-	}
-	
-	public int getRepeatCount(){
-		return formController.getLastRepeatCount();
-	}
-	
-	private boolean isRepeatGroupJuncture(){
-		return formController.getEvent()== FormEntryController.EVENT_REPEAT_JUNCTURE;
-	}
-	
-	private String getGroupPropmt(){
-		return formController.getLastGroupText();
+	public boolean isRepeat(){
+		return formController.getEvent() == FormEntryController.EVENT_REPEAT ||
+			formController.getEvent() == FormEntryController.EVENT_PROMPT_NEW_REPEAT ||
+			formController.getEvent() == FormEntryController.EVENT_REPEAT_JUNCTURE;
 	}
 	
 	public boolean isEndOfSurvey(){
 		return formController.getEvent() == FormEntryController.EVENT_END_OF_FORM;
+	}
+	
+	public ISurveyEvent getCurrentEvent(){
+		return currentEvent;
 	}
 	
 	public void getQuestionInfo(){
@@ -149,13 +125,6 @@ public class SurveyModel {
 			break;
 		case FormEntryController.EVENT_QUESTION:
 			System.out.println("EVENT_QUESTION");
-			IAnswerData answerTemplate = getAnswerContainer();
-			System.out.println("AnswerType: "+answerTemplate.getClass());
-			if(isChoiceQuestion())
-				System.out.println("DataType: CHOICE");
-			if(isMulitChoiceQuestion())
-				System.out.println("DataType: CHOICE_LIST");
-			break;	
 		case FormEntryController.EVENT_REPEAT:
 			System.out.println("EVENT_REPEAT");
 			break;

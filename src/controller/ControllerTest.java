@@ -23,6 +23,8 @@ import org.javarosa.form.api.FormEntryController;
 import org.javarosa.form.api.FormEntryModel;
 import org.javarosa.xform.util.XFormUtils;
 
+import SurveyBot.ISurveyEvent;
+import SurveyBot.RepeatEvent;
 import SurveyBot.SurveyModel;
 
 public class ControllerTest {
@@ -36,7 +38,8 @@ public class ControllerTest {
 		//String formFilePath = "data/Birds.xml";
 		SurveyModel surveyBot = new SurveyModel(formFilePath);
 		while(!surveyBot.isEndOfSurvey()){
-			if(surveyBot.isRepeatPrompt() && surveyBot.getRepeatCount()<2)
+			ISurveyEvent event = surveyBot.getCurrentEvent();
+			if(event instanceof RepeatEvent && ((RepeatEvent) event).getRepeatCount() < 2)
 				surveyBot.stepIntoRepeat();
 			surveyBot.getQuestionInfo();
 			surveyBot.jumpToNextScreenEvent();
