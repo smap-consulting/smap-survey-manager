@@ -35,7 +35,7 @@ public class ControllerTest {
 		//String formFilePath = "data/Household Survey.xml";
 		String formFilePath = "data/Birds.xml";
 		SurveyModel surveyBot = new SurveyModel(formFilePath);
-		while(true){
+		while(!surveyBot.isEndOfSurvey()){
 			surveyBot.getQuestionInfo();
 			surveyBot.jumpToNextScreenEvent();
 		}
