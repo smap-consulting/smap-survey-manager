@@ -24,6 +24,10 @@ public class QuestionEvent implements ISurveyEvent {
 		StringBuilder sb = new StringBuilder(formEntryPrompt.getShortText());
 		if(isChoiceQuestion() || isMulitChoiceQuestion())
 			sb.append(SMSConstants.NEWLINE+getSelectChoicesString());
+		if(formEntryPrompt.getHelpText()!=null){
+			sb.append(SMSConstants.NEWLINE);
+			sb.append(SMSConstants.PRE_HINT+formEntryPrompt.getHelpText()+SMSConstants.POST_HINT);
+		}
 		return sb.toString();
 	}
 
