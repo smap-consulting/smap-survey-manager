@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
 import org.javarosa.core.model.data.AnswerDataFactory;
@@ -14,7 +15,7 @@ import org.javarosa.form.api.FormEntryController;
 import org.javarosa.form.api.FormEntryModel;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.javarosa.xform.util.XFormUtils;
-
+import org.javarosa.core.model.Constants;
 import controller.FormController;
 import controller.JavaRosaException;
 import controller.FormController.InstanceMetadata;
@@ -48,7 +49,7 @@ public class SurveyModel {
 	}
 	
 	public String getPrompt(){
-		if(isQuestionGroup())
+		if(isGroup())
 			return getGroupPropmt();
 		if(isRepeatPrompt() || isRepeat() || isRepeatGroupJuncture())
 			return formController.getLastRepeatedGroupName();
@@ -95,13 +96,26 @@ public class SurveyModel {
 		formController.stepToNextEvent(true);
 	}
 	
+	public boolean isChoiceQuestion(){
+		return formController.getQuestionPrompt().getDataType()==Constants.DATATYPE_CHOICE;
+	}
+	
+	public boolean isMulitChoiceQuestion(){
+		return formController.getQuestionPrompt().getDataType()==Constants.DATATYPE_CHOICE_LIST;
+	}
+	
 	public void stepIntoRepeat(){
 		formController.newRepeat();
 	}
 	
-	private boolean isQuestionGroup(){
+	private boolean isGroup(){
 		return formController.getEvent()== FormEntryController.EVENT_GROUP;
 	}
+	
+	private boolean isQuestion(){
+		return formController.getEvent()== FormEntryController.EVENT_QUESTION;
+	}
+
 	
 	private boolean isRepeat(){
 		return formController.getEvent()== FormEntryController.EVENT_REPEAT;
@@ -136,7 +150,11 @@ public class SurveyModel {
 		case FormEntryController.EVENT_QUESTION:
 			System.out.println("EVENT_QUESTION");
 			IAnswerData answerTemplate = getAnswerContainer();
-			System.out.println("ExpectedAnswerType: "+answerTemplate.getClass());
+			System.out.println("AnswerType: "+answerTemplate.getClass());
+			if(isChoiceQuestion())
+				System.out.println("DataType: CHOICE");
+			if(isMulitChoiceQuestion())
+				System.out.println("DataType: CHOICE_LIST");
 			break;	
 		case FormEntryController.EVENT_REPEAT:
 			System.out.println("EVENT_REPEAT");
