@@ -1,6 +1,9 @@
 package SurveyBot;
 
+import java.util.Vector;
+
 import org.javarosa.core.model.Constants;
+import org.javarosa.core.model.SelectChoice;
 import org.javarosa.core.model.data.AnswerDataFactory;
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.form.api.FormEntryPrompt;
@@ -18,7 +21,10 @@ public class QuestionEvent implements ISurveyEvent {
 	}
 	
 	public String getPromptText() {
-		return formEntryPrompt.getShortText();
+		StringBuilder sb = new StringBuilder(formEntryPrompt.getShortText());
+		if(isChoiceQuestion() || isMulitChoiceQuestion())
+			sb.append(SMSConstants.NEWLINE+getSelectChoicesString());
+		return sb.toString();
 	}
 
 	@Override
@@ -46,5 +52,15 @@ public class QuestionEvent implements ISurveyEvent {
 	public String info() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public String getSelectChoicesString(){
+		Vector<SelectChoice> selectChoices = formEntryPrompt.getSelectChoices();
+		StringBuilder sb = new StringBuilder();
+		for(SelectChoice choice : selectChoices){
+			sb.append(formEntryPrompt.getSelectItemText(choice.selection()));
+			sb.append(SMSConstants.NEWLINE);
+		}
+		return sb.toString();
 	}
 }

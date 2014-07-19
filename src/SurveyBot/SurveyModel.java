@@ -49,10 +49,7 @@ public class SurveyModel {
 	}
 	
 	private String getLocale(int index) {
-		Localizer l = this.formDef.getLocalizer();
-		l.setDefaultLocale(l.getAvailableLocales()[index]);
-		l.setLocale(l.getAvailableLocales()[index]);
-		return l.getLocale();
+		return this.formDef.getLocalizer().getAvailableLocales()[index];
 	}
 	
 	private FormDef createFormDef(String xformFilePath){
