@@ -88,7 +88,6 @@ public class SurveyModel {
 			jumpToNextScreenEvent();
 	}
 	
-	
 	/**
 	 *Steps to the next question, will always dive into group questions, but will skip over repeats 
 	 */
@@ -100,23 +99,16 @@ public class SurveyModel {
 		formController.newRepeat();
 	}
 	
-	
 	private boolean isQuestionGroup(){
-		if(formController.getEvent()== FormEntryController.EVENT_GROUP)
-			return true;
-		return false;
+		return formController.getEvent()== FormEntryController.EVENT_GROUP;
 	}
 	
 	private boolean isRepeat(){
-		if(formController.getEvent()== FormEntryController.EVENT_REPEAT)
-			return true;
-		return false;
+		return formController.getEvent()== FormEntryController.EVENT_REPEAT;
 	}
 	
 	public boolean isRepeatPrompt(){
-		if(formController.getEvent()== FormEntryController.EVENT_PROMPT_NEW_REPEAT)
-			return true;
-		return false;
+		return formController.getEvent()== FormEntryController.EVENT_PROMPT_NEW_REPEAT;
 	}
 	
 	public int getRepeatCount(){
@@ -124,9 +116,7 @@ public class SurveyModel {
 	}
 	
 	private boolean isRepeatGroupJuncture(){
-		if(formController.getEvent()== FormEntryController.EVENT_REPEAT_JUNCTURE)
-			return true;
-		return false;
+		return formController.getEvent()== FormEntryController.EVENT_REPEAT_JUNCTURE;
 	}
 	
 	private String getGroupPropmt(){

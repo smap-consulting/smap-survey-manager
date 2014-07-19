@@ -32,11 +32,11 @@ public class ControllerTest {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		//String formFilePath = "data/Household Survey.xml";
-		String formFilePath = "data/Birds.xml";
+		String formFilePath = "data/Household Survey.xml";
+		//String formFilePath = "data/Birds.xml";
 		SurveyModel surveyBot = new SurveyModel(formFilePath);
 		while(!surveyBot.isEndOfSurvey()){
-			if(surveyBot.isRepeatPrompt() && surveyBot.getRepeatCount()==0)
+			if(surveyBot.isRepeatPrompt() && surveyBot.getRepeatCount()<2)
 				surveyBot.stepIntoRepeat();
 			surveyBot.getQuestionInfo();
 			surveyBot.jumpToNextScreenEvent();
