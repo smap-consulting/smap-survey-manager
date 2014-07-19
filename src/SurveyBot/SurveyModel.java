@@ -50,7 +50,7 @@ public class SurveyModel {
 	public String getPrompt(){
 		if(isQuestionGroup())
 			return getGroupPropmt();
-		if(isRepeatGroupPrompt() || isRepeat() || isRepeatGroupJuncture())
+		if(isRepeatPrompt() || isRepeat() || isRepeatGroupJuncture())
 			return formController.getLastRepeatedGroupName();
 		FormEntryPrompt entryPrompt =  formController.getQuestionPrompt();
 		return entryPrompt.getShortText();
@@ -93,8 +93,13 @@ public class SurveyModel {
 	 *Steps to the next question, will always dive into group questions, but will skip over repeats 
 	 */
 	public void jumpToNextScreenEvent(){
-			formController.stepToNextEvent(true);
+		formController.stepToNextEvent(true);
 	}
+	
+	public void stepIntoRepeat(){
+		formController.newRepeat();
+	}
+	
 	
 	private boolean isQuestionGroup(){
 		if(formController.getEvent()== FormEntryController.EVENT_GROUP)
@@ -108,10 +113,14 @@ public class SurveyModel {
 		return false;
 	}
 	
-	private boolean isRepeatGroupPrompt(){
+	public boolean isRepeatPrompt(){
 		if(formController.getEvent()== FormEntryController.EVENT_PROMPT_NEW_REPEAT)
 			return true;
 		return false;
+	}
+	
+	public int getRepeatCount(){
+		return formController.getLastRepeatCount();
 	}
 	
 	private boolean isRepeatGroupJuncture(){
@@ -137,7 +146,7 @@ public class SurveyModel {
 		case FormEntryController.EVENT_QUESTION:
 			System.out.println("EVENT_QUESTION");
 			IAnswerData answerTemplate = getAnswerContainer();
-			System.out.println("QuestionType: "+answerTemplate.getClass());
+			System.out.println("ExpectedAnswerType: "+answerTemplate.getClass());
 			break;	
 		case FormEntryController.EVENT_REPEAT:
 			System.out.println("EVENT_REPEAT");

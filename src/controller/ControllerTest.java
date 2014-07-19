@@ -36,6 +36,8 @@ public class ControllerTest {
 		String formFilePath = "data/Birds.xml";
 		SurveyModel surveyBot = new SurveyModel(formFilePath);
 		while(!surveyBot.isEndOfSurvey()){
+			if(surveyBot.isRepeatPrompt() && surveyBot.getRepeatCount()==0)
+				surveyBot.stepIntoRepeat();
 			surveyBot.getQuestionInfo();
 			surveyBot.jumpToNextScreenEvent();
 		}
