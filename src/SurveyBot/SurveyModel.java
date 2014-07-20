@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
-import org.javarosa.core.services.locale.Localizer;
 import org.javarosa.form.api.FormEntryController;
 import org.javarosa.form.api.FormEntryModel;
 import org.javarosa.xform.util.XFormUtils;
@@ -65,14 +63,14 @@ public class SurveyModel {
 	
 	private void jumpToFirstAnswerableQuestion(){
 		if(!formController.currentPromptIsQuestion())
-			jumpToNextScreenEvent();
+			jumpToNextEvent();
 		setCurrentEvent();
 	}
 	
 	/**
-	 *Steps to the next question, will always dive into group questions, but will skip over repeats 
+	 *Steps to the next event, will always dive into group questions, but will skip over repeats 
 	 */
-	public void jumpToNextScreenEvent(){
+	public void jumpToNextEvent(){
 		formController.stepToNextEvent(true);
 		setCurrentEvent();
 	}
@@ -114,9 +112,9 @@ public class SurveyModel {
 		return currentEvent;
 	}
 	
-	public void getEventInfo(){
-		System.out.println(currentEvent.info());
-		char dash = '-';
-		System.out.printf("---\n");
+	public String getEventInfo(){
+		StringBuilder sb = new StringBuilder(currentEvent.info());
+		sb.append("---\n");
+		return sb.toString();
 	}
 }

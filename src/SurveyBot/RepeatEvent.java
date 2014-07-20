@@ -10,7 +10,6 @@ public class RepeatEvent implements ISurveyEvent {
 		this.formController = formController;
 	}
 	
-	@Override
 	public String getPromptText() {
 		return formController.getLastRepeatedGroupName();
 	}
@@ -25,10 +24,10 @@ public class RepeatEvent implements ISurveyEvent {
 		return formController.getLastRepeatCount();
 	}
 
-	@Override
 	public String info() {
 		StringBuilder sb = new StringBuilder("Event Type: Repeat\n");
-		sb.append("Prompt: "+getPromptText());
+		sb.append("Prompt: "+getPromptText()+"\n");
+		sb.append("RepeatNumber: "+getRepeatCount());
 		return sb.toString();
 	}
 }
