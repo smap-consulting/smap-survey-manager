@@ -10,6 +10,7 @@ import org.javarosa.form.api.FormEntryController;
 import org.javarosa.form.api.FormEntryModel;
 import org.javarosa.xform.util.XFormUtils;
 import controller.FormController;
+import controller.JavaRosaException;
 
 /**
  * @author Scott Wells
@@ -71,7 +72,12 @@ public class SurveyModel {
 	 *Steps to the next event, will always dive into group questions, but will skip over repeats 
 	 */
 	public void jumpToNextEvent(){
-		formController.stepToNextEvent(true);
+		try {
+			formController.stepToNextScreenEvent();
+		} catch (JavaRosaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setCurrentEvent();
 	}
 	
@@ -87,7 +93,7 @@ public class SurveyModel {
 	
 	public void stepIntoRepeat(){
 		formController.newRepeat();
-		setCurrentEvent();
+		jumpToNextEvent();
 	}
 	
 	private boolean isGroup(){
@@ -114,7 +120,7 @@ public class SurveyModel {
 	
 	public String getEventInfo(){
 		StringBuilder sb = new StringBuilder(currentEvent.info());
-		sb.append("---\n");
+		sb.append("\n---\n");
 		return sb.toString();
 	}
 }

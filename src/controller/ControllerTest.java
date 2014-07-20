@@ -34,16 +34,19 @@ public class ControllerTest {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		String formFilePath = "data/Household Survey.xml";
-		//String formFilePath = "data/Birds.xml";
+		stepThroughSurvey("data/Household Survey.xml");
+		stepThroughSurvey("data/Demo Form.xml");
+		stepThroughSurvey("data/Birds.xml");
+	}
+	public static void stepThroughSurvey(String formFilePath){
 		SurveyModel surveyBot = new SurveyModel(formFilePath);
-		
 		while(!surveyBot.isEndOfSurvey()){
 			ISurveyEvent event = surveyBot.getCurrentEvent();
-			if(event instanceof RepeatEvent && ((RepeatEvent) event).getRepeatCount() < 2)
-				surveyBot.stepIntoRepeat();
 			System.out.println(surveyBot.getEventInfo()+"\n");
-			surveyBot.jumpToNextEvent();
+			if(event instanceof RepeatEvent && ((RepeatEvent) event).getRepeatCount() < 2){
+				surveyBot.stepIntoRepeat();
+			}else
+				surveyBot.jumpToNextEvent();
 		}
 	}
 }
