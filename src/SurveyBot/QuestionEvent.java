@@ -52,10 +52,11 @@ public class QuestionEvent implements ISurveyEvent {
 		return AnswerDataFactory.templateByDataType(formController.getQuestionPrompt().getControlType());
 	}
 
-	@Override
 	public String info() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder("Event Type: Question\n");
+		sb.append("Prompt:"+getPromptText()+"\n");
+		sb.append("Answer Type: " + getAnswerContainer().getClass());
+		return sb.toString();
 	}
 	
 	public String getSelectChoicesString(){

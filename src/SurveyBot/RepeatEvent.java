@@ -27,7 +27,8 @@ public class RepeatEvent implements ISurveyEvent {
 
 	@Override
 	public String info() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder("Event Type: Repeat\n");
+		sb.append("Prompt: "+getPromptText());
+		return sb.toString();
 	}
 }

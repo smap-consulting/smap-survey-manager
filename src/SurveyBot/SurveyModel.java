@@ -114,27 +114,9 @@ public class SurveyModel {
 		return currentEvent;
 	}
 	
-	public void getQuestionInfo(){
-		System.out.print("Event Type: ");
-		switch(formController.getEvent()){
-		case FormEntryController.EVENT_GROUP:
-			System.out.println("EVENT_GROUP");
-			break;
-		case FormEntryController.EVENT_QUESTION:
-			System.out.println("EVENT_QUESTION");
-		case FormEntryController.EVENT_REPEAT:
-			System.out.println("EVENT_REPEAT");
-			break;
-		case FormEntryController.EVENT_PROMPT_NEW_REPEAT:
-			System.out.println("EVENT_PROMPT_NEW_REPEAT");
-			break;
-		case FormEntryController.EVENT_REPEAT_JUNCTURE:
-			System.out.println("EVENT_REPEAT_JUNCTURE");
-			break;
-		case FormEntryController.EVENT_END_OF_FORM:
-			System.out.println("END_OF_FORM");
-			return;
-		}
-		System.out.println("Prompt: "+getPrompt());
+	public void getEventInfo(){
+		System.out.println(currentEvent.info());
+		char dash = '-';
+		System.out.printf("---\n");
 	}
 }

@@ -19,9 +19,9 @@ public class GroupEvent implements ISurveyEvent {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
 	public String info() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder("Event Type: Group\n");
+		sb.append("Prompt: "+getPromptText());
+		return sb.toString();
 	}
 }

@@ -41,7 +41,7 @@ public class ControllerTest {
 			ISurveyEvent event = surveyBot.getCurrentEvent();
 			if(event instanceof RepeatEvent && ((RepeatEvent) event).getRepeatCount() < 2)
 				surveyBot.stepIntoRepeat();
-			surveyBot.getQuestionInfo();
+			surveyBot.getEventInfo();
 			surveyBot.jumpToNextScreenEvent();
 		}
 		
