@@ -3,6 +3,7 @@ package SurveyBot;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
@@ -120,7 +121,21 @@ public class SurveyModel {
 	
 	public String getEventInfo(){
 		StringBuilder sb = new StringBuilder(currentEvent.info());
-		sb.append("\n---\n");
 		return sb.toString();
+	}
+	
+	public String[] getFullQuestionPromptList(){
+		ArrayList<String> questionList = new ArrayList<String>();
+		
+		while(!isEndOfSurvey()){
+			ISurveyEvent event = getCurrentEvent();
+			questionList.add(getCurrentEvent().getPromptText());
+			if(event instanceof RepeatEvent && ((RepeatEvent) event).getRepeatCount() < 2){
+				stepIntoRepeat();
+			}else
+				jumpToNextEvent();
+		}
+		String[] returnArray = new String[questionList.size()]; 
+		return questionList.toArray(returnArray);
 	}
 }

@@ -40,13 +40,6 @@ public class ControllerTest {
 	}
 	public static void stepThroughSurvey(String formFilePath){
 		SurveyModel surveyBot = new SurveyModel(formFilePath);
-		while(!surveyBot.isEndOfSurvey()){
-			ISurveyEvent event = surveyBot.getCurrentEvent();
-			System.out.println(surveyBot.getEventInfo()+"\n");
-			if(event instanceof RepeatEvent && ((RepeatEvent) event).getRepeatCount() < 2){
-				surveyBot.stepIntoRepeat();
-			}else
-				surveyBot.jumpToNextEvent();
-		}
+		System.out.println(surveyBot.getFullQuestionPromptList().length);
 	}
 }
