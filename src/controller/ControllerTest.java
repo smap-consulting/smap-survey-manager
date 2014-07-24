@@ -37,6 +37,8 @@ public class ControllerTest {
 		stepThroughSurvey("data/Household Survey.xml");
 		stepThroughSurvey("data/Demo Form.xml");
 		stepThroughSurvey("data/Birds.xml");
+		SurveyModel surveyBot = new SurveyModel("data/Birds.xml");
+		System.out.println(surveyBot.getAnsweredXML());
 	}
 	public static void stepThroughSurvey(String formFilePath){
 		SurveyModel surveyBot = new SurveyModel(formFilePath);

@@ -1,12 +1,17 @@
 package SurveyBot;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
+import org.javarosa.core.services.transport.payload.ByteArrayPayload;
 import org.javarosa.form.api.FormEntryController;
 import org.javarosa.form.api.FormEntryModel;
 import org.javarosa.xform.util.XFormUtils;
@@ -137,5 +142,25 @@ public class SurveyModel {
 		}
 		String[] returnArray = new String[questionList.size()]; 
 		return questionList.toArray(returnArray);
+	}
+	
+	public String getAnsweredXML(){
+		ByteArrayPayload bap = null;
+		ByteArrayOutputStream baos = null;
+		try {
+			baos = new ByteArrayOutputStream();
+			DataOutputStream out = new DataOutputStream(baos);
+			bap = formController.getFilledInFormXml();
+			bap.writeExternal(out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String str=null;
+		try {
+			str=baos.toString("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return str;
 	}
 }
