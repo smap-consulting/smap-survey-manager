@@ -4,7 +4,7 @@ import controller.FormController;
 
 public class GroupEvent implements ISurveyEvent {
 
-	private FormController formController;
+	final private FormController formController;
 
 	public GroupEvent(FormController formController){
 		this.formController = formController;

@@ -39,6 +39,17 @@ public class ControllerTest {
 		stepThroughSurvey("data/Birds.xml");
 		SurveyModel surveyBot = new SurveyModel("data/Birds.xml");
 		System.out.println(surveyBot.getAnsweredXML());
+		
+		//answer question
+		
+		//get instance + index
+		
+		//(save to file)
+		
+		//create new survey by reloading instance, set index
+		
+		//test result
+		
 	}
 	public static void stepThroughSurvey(String formFilePath){
 		SurveyModel surveyBot = new SurveyModel(formFilePath);

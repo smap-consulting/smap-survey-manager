@@ -4,7 +4,7 @@ import controller.FormController;
 
 public class RepeatEvent implements ISurveyEvent {
 
-	private FormController formController;
+	final private FormController formController;
 
 	public RepeatEvent(FormController formController){
 		this.formController = formController;

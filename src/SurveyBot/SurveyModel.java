@@ -35,16 +35,33 @@ public class SurveyModel {
 	public SurveyModel(String xformFilePath){
 		FormDef formDef = createFormDef(xformFilePath);
 		this.formDef=formDef;
-		this.formController = initFormController(formDef);
+		this.formController = initFormController(formDef,null);
 		if(!formController.currentPromptIsQuestion())
 			jumpToFirstAnswerableQuestion();
 	}
 	
+	/**
+	 * Reload an existing survey instance
+	 * @param xformFilePath
+	 * @param savedInstancePath
+	 */
+	public SurveyModel(String xformFilePath, String savedInstancePath, FormIndex index){
+		FormDef formDef = createFormDef(xformFilePath);
+		this.formDef=formDef;
+		this.formController = initFormController(formDef, new File(savedInstancePath));
+		this.formController.jumpToIndex(index);
+	}
+	
+	
+	/**
+	 * Returns the prompt text for the current event
+	 * @return
+	 */
 	public String getPrompt(){
 		return currentEvent.getPromptText();
 	}
 	
-	private FormController initFormController(FormDef formDef) {
+	private FormController initFormController(FormDef formDef, File savedInstancePath) {
 		FormEntryModel formEntryModel = new FormEntryModel(formDef);
 		FormEntryController formEntryController = new FormEntryController(formEntryModel);
 		formEntryController.setLanguage(getLocale(0));
@@ -55,6 +72,10 @@ public class SurveyModel {
 	
 	private String getLocale(int index) {
 		return this.formDef.getLocalizer().getAvailableLocales()[index];
+	}
+	
+	public FormIndex getCurrentIndex() {
+		return formController.getCaptionPrompt().getIndex();
 	}
 	
 	private FormDef createFormDef(String xformFilePath){

@@ -12,7 +12,7 @@ import controller.FormController;
 
 public class QuestionEvent implements ISurveyEvent {
 	
-	private FormEntryPrompt formEntryPrompt;
+	final private FormEntryPrompt formEntryPrompt;
 	private FormController formController;
 	
 	public QuestionEvent(FormController formController){
