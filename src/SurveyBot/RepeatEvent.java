@@ -17,7 +17,7 @@ public class RepeatEvent implements ISurveyEvent {
 
 	public SurveyAction answer(String answerText, FormController formController) {
 		
-		return SurveyAction.forward;
+		return SurveyAction.into;
 	}
 	
 	public int getRepeatCount(){

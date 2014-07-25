@@ -24,7 +24,7 @@ import controller.JavaRosaException;
  */
 
 public class SurveyModel {
-	public enum SurveyAction{forward, backward, stay, end, start};
+	public enum SurveyAction{forward, backward, stay, end, start,into};
 	
 	private FormController formController;
 	private FormDef formDef;
@@ -38,8 +38,7 @@ public class SurveyModel {
 		FormDef formDef = createFormDef(xformFilePath);
 		this.formDef=formDef;
 		this.formController = initFormController(formDef,null);
-		if(!formController.currentPromptIsQuestion())
-			jumpToFirstAnswerableQuestion();
+		jumpToFirstAnswerableQuestion();
 	}
 	
 	/**
@@ -64,7 +63,18 @@ public class SurveyModel {
 	}
 	
 	public void answer(String answerText){
-		SurveyAction nextAction = currentEvent.answer(answerText, formController);
+		SurveyAction nextAction = null;
+		try {
+			nextAction = currentEvent.answer(answerText, formController);
+		} catch (JavaRosaException e) {
+			jumpToNextEvent();
+			///e.printStackTrace();
+		}
+		System.out.println((formController.validateAnswers(false)==FormEntryController.ANSWER_OK)?"Valid":"Invalid");
+		if(nextAction==SurveyAction.forward || nextAction==SurveyAction.into)
+			jumpToNextEvent();
+		//if(nextAction==SurveyAction.into)
+			//stepIntoRepeat();
 	}
 	
 	private FormController initFormController(FormDef formDef, File savedInstancePath) {

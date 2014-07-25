@@ -6,11 +6,13 @@ import org.javarosa.core.model.Constants;
 import org.javarosa.core.model.SelectChoice;
 import org.javarosa.core.model.data.AnswerDataFactory;
 import org.javarosa.core.model.data.IAnswerData;
+import org.javarosa.core.model.data.UncastData;
 import org.javarosa.form.api.FormEntryPrompt;
 
 import SurveyBot.SurveyModel.SurveyAction;
 
 import controller.FormController;
+import controller.JavaRosaException;
 
 public class QuestionEvent implements ISurveyEvent {
 	
@@ -33,9 +35,19 @@ public class QuestionEvent implements ISurveyEvent {
 		return sb.toString();
 	}
 
-	public SurveyAction answer(String answerText, FormController formController) {
+	public SurveyAction answer(String answerText, FormController formController) throws JavaRosaException {
 		IAnswerData answerContainer = getAnswerContainer();
-		
+		UncastData uncastData = new UncastData(answerText);
+		try {
+			IAnswerData answeredContainer = answerContainer.cast(uncastData);
+			System.out.println(formController.saveAnswer(answeredContainer));
+		}catch (JavaRosaException e) {
+			System.out.println("Invalid JR Answer");
+			e.printStackTrace();
+		}catch(Exception e){
+			System.out.println("Invalid Answer");
+			throw new JavaRosaException(e);
+		}
 		return SurveyAction.forward;
 	}
 	

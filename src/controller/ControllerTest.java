@@ -10,11 +10,17 @@ public class ControllerTest {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
+		stepThroughSurvey("data/Birds.xml");
 		stepThroughSurvey("data/Household Survey.xml");
 		stepThroughSurvey("data/Demo Form.xml");
-		stepThroughSurvey("data/Birds.xml");
-		SurveyModel surveyBot = new SurveyModel("data/Birds.xml");
-		System.out.println(surveyBot.getAnsweredXML());
+
+		SurveyModel surveyBot = new SurveyModel("data/Household Survey.xml");
+		
+		while(!surveyBot.isEndOfSurvey()){
+			System.out.println(surveyBot.getPrompt());
+			surveyBot.answer("hello");
+			System.out.println(surveyBot.getAnsweredXML());
+		}
 		
 		//answer question
 		
