@@ -8,6 +8,8 @@ import org.javarosa.core.model.data.AnswerDataFactory;
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.form.api.FormEntryPrompt;
 
+import SurveyBot.SurveyModel.SurveyAction;
+
 import controller.FormController;
 
 public class QuestionEvent implements ISurveyEvent {
@@ -31,10 +33,10 @@ public class QuestionEvent implements ISurveyEvent {
 		return sb.toString();
 	}
 
-	@Override
-	public void answer(String answerText) {
-		// TODO Auto-generated method stub
+	public SurveyAction answer(String answerText, FormController formController) {
+		IAnswerData answerContainer = getAnswerContainer();
 		
+		return SurveyAction.forward;
 	}
 	
 	public boolean isChoiceQuestion(){

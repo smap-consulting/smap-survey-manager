@@ -1,5 +1,6 @@
 package SurveyBot;
 
+import SurveyBot.SurveyModel.SurveyAction;
 import controller.FormController;
 
 public class RepeatEvent implements ISurveyEvent {
@@ -14,10 +15,9 @@ public class RepeatEvent implements ISurveyEvent {
 		return formController.getLastRepeatedGroupName();
 	}
 
-	@Override
-	public void answer(String answerText) {
-		// TODO Auto-generated method stub
-
+	public SurveyAction answer(String answerText, FormController formController) {
+		
+		return SurveyAction.forward;
 	}
 	
 	public int getRepeatCount(){

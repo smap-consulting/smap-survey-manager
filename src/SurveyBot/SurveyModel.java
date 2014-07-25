@@ -24,6 +24,8 @@ import controller.JavaRosaException;
  */
 
 public class SurveyModel {
+	public enum SurveyAction{forward, backward, stay, end, start};
+	
 	private FormController formController;
 	private FormDef formDef;
 	private ISurveyEvent currentEvent;
@@ -61,12 +63,16 @@ public class SurveyModel {
 		return currentEvent.getPromptText();
 	}
 	
+	public void answer(String answerText){
+		SurveyAction nextAction = currentEvent.answer(answerText, formController);
+	}
+	
 	private FormController initFormController(FormDef formDef, File savedInstancePath) {
 		FormEntryModel formEntryModel = new FormEntryModel(formDef);
 		FormEntryController formEntryController = new FormEntryController(formEntryModel);
 		formEntryController.setLanguage(getLocale(0));
 		formEntryController.jumpToIndex(FormIndex.createBeginningOfFormIndex());
-		FormController formController = new FormController(new File("a path"), formEntryController, null);
+		FormController formController = new FormController(null, formEntryController, savedInstancePath);
 		return formController;
 	}
 	
@@ -168,18 +174,16 @@ public class SurveyModel {
 	public String getAnsweredXML(){
 		ByteArrayPayload bap = null;
 		ByteArrayOutputStream baos = null;
+		String str=null;
 		try {
 			baos = new ByteArrayOutputStream();
 			DataOutputStream out = new DataOutputStream(baos);
 			bap = formController.getFilledInFormXml();
 			bap.writeExternal(out);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String str=null;
-		try {
 			str=baos.toString("UTF-8");
 		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return str;

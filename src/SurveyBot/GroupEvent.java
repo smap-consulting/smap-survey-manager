@@ -1,5 +1,6 @@
 package SurveyBot;
 
+import SurveyBot.SurveyModel.SurveyAction;
 import controller.FormController;
 
 public class GroupEvent implements ISurveyEvent {
@@ -15,8 +16,8 @@ public class GroupEvent implements ISurveyEvent {
 	}
 
 	@Override
-	public void answer(String answerText) {
-		// TODO Auto-generated method stub
+	public SurveyAction answer(String answerText, FormController formController) {
+		return SurveyAction.forward;
 	}
 
 	public String info() {

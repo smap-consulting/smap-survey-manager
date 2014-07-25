@@ -1,7 +1,10 @@
 package SurveyBot;
 
+import SurveyBot.SurveyModel.SurveyAction;
+import controller.FormController;
+
 public interface ISurveyEvent {
 	public String getPromptText();
-	public void answer(String answerText);
+	public SurveyAction answer(String answerText, FormController formController);
 	public String info();
 }
