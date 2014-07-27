@@ -1,5 +1,7 @@
 package SurveyBot;
 
+import javax.xml.bind.ValidationException;
+
 import SurveyBot.SurveyModel.SurveyAction;
 import controller.FormController;
 import controller.JavaRosaException;

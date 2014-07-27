@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import javax.xml.bind.ValidationException;
+
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
 import org.javarosa.core.services.transport.payload.ByteArrayPayload;
@@ -24,7 +26,7 @@ import controller.JavaRosaException;
  */
 
 public class SurveyModel {
-	public enum SurveyAction{forward, backward, stay, end, start,into};
+	public enum SurveyAction{forward, backward, stay, end, start,into,retry};
 	
 	private FormController formController;
 	private FormDef formDef;
@@ -53,7 +55,6 @@ public class SurveyModel {
 		this.formController.jumpToIndex(index);
 	}
 	
-	
 	/**
 	 * Returns the prompt text for the current event
 	 * @return
@@ -62,19 +63,8 @@ public class SurveyModel {
 		return currentEvent.getPromptText();
 	}
 	
-	public void answer(String answerText){
-		SurveyAction nextAction = null;
-		try {
-			nextAction = currentEvent.answer(answerText, formController);
-		} catch (JavaRosaException e) {
-			jumpToNextEvent();
-			///e.printStackTrace();
-		}
-		System.out.println((formController.validateAnswers(false)==FormEntryController.ANSWER_OK)?"Valid":"Invalid");
-		if(nextAction==SurveyAction.forward || nextAction==SurveyAction.into)
-			jumpToNextEvent();
-		//if(nextAction==SurveyAction.into)
-			//stepIntoRepeat();
+	public SurveyAction answer(String answerText) throws JavaRosaException{
+		return currentEvent.answer(answerText, formController);
 	}
 	
 	private FormController initFormController(FormDef formDef, File savedInstancePath) {
@@ -181,14 +171,12 @@ public class SurveyModel {
 		return questionList.toArray(returnArray);
 	}
 	
-	public String getAnsweredXML(){
-		ByteArrayPayload bap = null;
+	public String byteArrayToString(ByteArrayPayload bap){
 		ByteArrayOutputStream baos = null;
 		String str=null;
 		try {
 			baos = new ByteArrayOutputStream();
 			DataOutputStream out = new DataOutputStream(baos);
-			bap = formController.getFilledInFormXml();
 			bap.writeExternal(out);
 			str=baos.toString("UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -197,5 +185,13 @@ public class SurveyModel {
 			e.printStackTrace();
 		}
 		return str;
+	}
+	
+	public String getAnsweredXML(){
+		try {
+			return byteArrayToString(formController.getFilledInFormXml());
+		} catch (IOException e) {
+			return null;
+		}
 	}
 }

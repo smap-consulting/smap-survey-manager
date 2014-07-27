@@ -2,6 +2,8 @@ package SurveyBot;
 
 import java.util.Vector;
 
+import javax.xml.bind.ValidationException;
+
 import org.javarosa.core.model.Constants;
 import org.javarosa.core.model.SelectChoice;
 import org.javarosa.core.model.data.AnswerDataFactory;
@@ -38,16 +40,8 @@ public class QuestionEvent implements ISurveyEvent {
 	public SurveyAction answer(String answerText, FormController formController) throws JavaRosaException {
 		IAnswerData answerContainer = getAnswerContainer();
 		UncastData uncastData = new UncastData(answerText);
-		try {
-			IAnswerData answeredContainer = answerContainer.cast(uncastData);
-			System.out.println(formController.saveAnswer(answeredContainer));
-		}catch (JavaRosaException e) {
-			System.out.println("Invalid JR Answer");
-			e.printStackTrace();
-		}catch(Exception e){
-			System.out.println("Invalid Answer");
-			throw new JavaRosaException(e);
-		}
+		IAnswerData answeredContainer = answerContainer.cast(uncastData);
+		formController.saveAnswer(answeredContainer);
 		return SurveyAction.forward;
 	}
 	
