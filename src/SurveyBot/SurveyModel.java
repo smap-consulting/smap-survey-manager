@@ -189,7 +189,7 @@ public class SurveyModel {
 	
 	public String getAnsweredXML(){
 		try {
-			return byteArrayToString(formController.getFilledInFormXml());
+			return byteArrayToString(formController.getFilledInFormXml()).substring(4).trim();
 		} catch (IOException e) {
 			return null;
 		}

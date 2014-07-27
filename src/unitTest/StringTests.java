@@ -12,17 +12,33 @@ import SurveyBot.SurveyModel;
 
 public class StringTests {
 
-	private SurveyModel surveyBot;
+	private static SurveyModel surveyBot=null;
 
-	public void setUp() throws Exception {
-		this.surveyBot = new SurveyModel("data/String only form.xml");
+	@BeforeClass  
+	public static void setUp() throws Exception {
+		surveyBot = new SurveyModel("data/String only form.xml");
+		assert (surveyBot) != null;
 	}
 
 	@Test
 	public void testPlainStringAnswer() throws JavaRosaException {
-		surveyBot.answer("Plain String");
-
-		//fail("Not yet implemented");
+		assertEquals(saveAnswerExtractResult("Plain String", "textFieldVanilla"),"Plain String");
 	}
-
+	
+	@Test
+	public void testRequiredStringAnswer() throws JavaRosaException {
+		surveyBot.jumpToNextEvent();
+		assertEquals(saveAnswerExtractResult("Answer Required", "textFieldRequired"),"Answer Required");
+	}
+	
+	@Test
+	public void testOverwriteAnswer() throws JavaRosaException{
+		assertEquals(saveAnswerExtractResult("Answer Not Required", "textFieldRequired"),"Answer Not Required");
+	}
+	
+	public String saveAnswerExtractResult(String answer, String tagName) throws JavaRosaException{
+		surveyBot.answer(answer);
+		String answeredXML = surveyBot.getAnsweredXML();
+		return AnswerValidator.getFirstValueFromTag(answeredXML, tagName);
+	}
 }

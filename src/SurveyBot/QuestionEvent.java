@@ -41,7 +41,8 @@ public class QuestionEvent implements ISurveyEvent {
 		IAnswerData answerContainer = getAnswerContainer();
 		UncastData uncastData = new UncastData(answerText);
 		IAnswerData answeredContainer = answerContainer.cast(uncastData);
-		formController.saveAnswer(answeredContainer);
+		formController.answerQuestion(formController.getFormIndex(),answeredContainer);
+		System.out.println(formController.validateAnswers(false));
 		return SurveyAction.forward;
 	}
 	

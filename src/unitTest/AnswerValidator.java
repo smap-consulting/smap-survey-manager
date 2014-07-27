@@ -17,30 +17,35 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class AnswerValidator {
-	public static boolean xmlContainsAnswer(String xml, String node, String expectedVal) {
-
-		
-		
-		return false;
-	}
-
-	public static String getValueFromXpath(String xml, String xpath){
+	/**Sourced from
+	 * http://stackoverflow.com/questions/4076910/how-to-retrieve-element-value-of-xml-using-java/4077986#4077986
+	 * @param xml
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getFirstValueFromTag(String xml, String nodeName){
 		DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
 		 try {
 	        Document dDoc = loadXMLFromString(xml);
-	        XPath xPath = XPathFactory.newInstance().newXPath();
-	        Node node = (Node) xPath.evaluate(xpath, dDoc, XPathConstants.NODE);
-	        return node.getNodeValue();
+	        NodeList nl = dDoc.getElementsByTagName(nodeName);
+	        return nl.item(0).getTextContent();
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        return null;
 	    }
 	}
 	
+	/**Sourced from
+	 * http://stackoverflow.com/questions/562160/in-java-how-do-i-parse-xml-as-a-string-instead-of-a-file
+	 * @param xml
+	 * @return
+	 * @throws Exception
+	 */
 	public static Document loadXMLFromString(String xml) throws Exception
 	{
 	    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
