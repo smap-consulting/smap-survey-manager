@@ -34,12 +34,26 @@ public class SurveyModelTests {
 	
 	@Test
 	public void testOverwriteAnswer() throws JavaRosaException{
+		surveyBot.jumpToNextEvent();
+		saveAnswerExtractResult("Answer Required", "textFieldRequired");
+		logXML();
 		assertEquals(saveAnswerExtractResult("Answer Not Required", "textFieldRequired"),"Answer Not Required");
+	}
+	
+	@Test
+	public void testPostSaveMetadata() throws JavaRosaException{
+		surveyBot.setFinalMetadata();
+		logXML();
+		assertNotNull(AnswerValidator.getFirstValueFromTag(surveyBot.getAnsweredXML(),"Date"));
 	}
 	
 	private String saveAnswerExtractResult(String answer, String tagName) throws JavaRosaException{
 		surveyBot.answer(answer);
 		String answeredXML = surveyBot.getAnsweredXML();
 		return AnswerValidator.getFirstValueFromTag(answeredXML, tagName);
+	}
+	
+	private void logXML(){
+		System.out.println(surveyBot.getAnsweredXML());
 	}
 }
