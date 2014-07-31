@@ -1,4 +1,4 @@
-package org.smap.surveyModel;
+package org.smap.surveyModel.utils;
 
 public class SMSConstants {
 	public final static String NEWLINE = "\n";

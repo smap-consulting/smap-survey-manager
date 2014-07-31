@@ -45,10 +45,17 @@ import org.javarosa.xpath.XPathParseTool;
 import org.javarosa.xpath.expr.XPathExpression;
 
 /**
+ * This Class has been modified to perform extra functions to assist the SMAP SMS Gateway 
+ * survey dialogue functions
+ * @author Scott
+ */
+
+/**
  * This class is a wrapper for Javarosa's FormEntryController. In theory, if you wanted to replace
  * javarosa as the form engine, you should only need to replace the methods in this file. Also, we
  * haven't wrapped every method provided by FormEntryController, only the ones we've needed so far.
  * Feel free to add more as necessary.
+ *
  *
  * @author carlhartung
  */

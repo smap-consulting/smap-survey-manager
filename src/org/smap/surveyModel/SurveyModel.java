@@ -69,7 +69,7 @@ public class SurveyModel {
 	}
 	
 	public SurveyAction answer(String answerText) throws JavaRosaException{
-		return currentEvent.answer(answerText, formController);
+		return currentEvent.answer(answerText);
 	}
 	
 	private FormController initFormController(FormDef formDef, File savedInstancePath) {
@@ -192,8 +192,17 @@ public class SurveyModel {
 		return str;
 	}
 	
+	/**Sets the endTime metadata (and other actions if set in jr:preload)
+	 * @return
+	 */
+	public boolean setFinalMetadata(){
+		return formController.postProcessInstance();
+	}
+	
 	public String getAnsweredXML(){
 		try {
+			//First 4 bytes in the string is size information, 
+			//must be stripped in order to be valid
 			return byteArrayToString(formController.getFilledInFormXml()).substring(4).trim();
 		} catch (IOException e) {
 			return null;

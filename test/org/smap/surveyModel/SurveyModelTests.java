@@ -8,6 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.odk.JavaRosaException;
 import org.smap.surveyModel.SurveyModel;
+import org.smap.surveyModel.utils.AnswerValidator;
 
 
 

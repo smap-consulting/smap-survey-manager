@@ -17,8 +17,7 @@ public class RepeatEvent implements ISurveyEvent {
 		return formController.getLastRepeatedGroupName();
 	}
 
-	public SurveyAction answer(String answerText, FormController formController) {
-		
+	public SurveyAction answer(String answerText) {
 		return SurveyAction.into;
 	}
 	

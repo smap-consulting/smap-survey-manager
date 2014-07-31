@@ -3,8 +3,8 @@ package controller;
 import java.io.IOException;
 
 import org.odk.JavaRosaException;
-import org.smap.surveyModel.AnswerValidator;
 import org.smap.surveyModel.SurveyModel;
+import org.smap.surveyModel.utils.AnswerValidator;
 
 
 
@@ -48,5 +48,7 @@ public class ControllerTest {
 	public static void stepThroughSurvey(String formFilePath){
 		SurveyModel surveyBot = new SurveyModel(formFilePath);
 		System.out.println(surveyBot.getFullQuestionPromptList().length);
+		String answeredXML = surveyBot.getAnsweredXML();
+		System.out.println(answeredXML);
 	}
 }

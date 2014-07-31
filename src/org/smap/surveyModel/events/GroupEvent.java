@@ -18,7 +18,7 @@ public class GroupEvent implements ISurveyEvent {
 	}
 
 	@Override
-	public SurveyAction answer(String answerText, FormController formController) {
+	public SurveyAction answer(String answerText) {
 		return SurveyAction.forward;
 	}
 
