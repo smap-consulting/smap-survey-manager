@@ -11,14 +11,12 @@ import org.smap.surveyModel.SurveyModel;
 import org.smap.surveyModel.utils.AnswerValidator;
 
 
-
-
 public class SurveyModelTests {
 
-	private static SurveyModel surveyBot=null;
+	private SurveyModel surveyBot = null;
 
-	@BeforeClass  
-	public static void setUp() throws Exception {
+	@Before  
+	public void setUp() throws Exception {
 		surveyBot = new SurveyModel("data/String only form.xml");
 		assert (surveyBot) != null;
 	}
@@ -39,7 +37,7 @@ public class SurveyModelTests {
 		assertEquals(saveAnswerExtractResult("Answer Not Required", "textFieldRequired"),"Answer Not Required");
 	}
 	
-	public String saveAnswerExtractResult(String answer, String tagName) throws JavaRosaException{
+	private String saveAnswerExtractResult(String answer, String tagName) throws JavaRosaException{
 		surveyBot.answer(answer);
 		String answeredXML = surveyBot.getAnsweredXML();
 		return AnswerValidator.getFirstValueFromTag(answeredXML, tagName);

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import javax.xml.bind.ValidationException;
 
-
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
 import org.javarosa.core.services.transport.payload.ByteArrayPayload;
