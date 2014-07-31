@@ -1,4 +1,4 @@
-package controller;
+package org.odk;
 
 public class JavaRosaException extends Exception {
 

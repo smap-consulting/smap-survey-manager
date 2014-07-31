@@ -1,10 +1,14 @@
-package SurveyBot;
+package org.smap.surveyModel.events;
 
 import javax.xml.bind.ValidationException;
 
-import SurveyBot.SurveyModel.SurveyAction;
-import controller.FormController;
-import controller.JavaRosaException;
+import org.odk.FormController;
+import org.odk.JavaRosaException;
+import org.smap.surveyModel.SurveyModel;
+import org.smap.surveyModel.SurveyModel.SurveyAction;
+
+
+
 
 public interface ISurveyEvent {
 	public String getPromptText();

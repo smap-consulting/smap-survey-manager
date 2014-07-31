@@ -1,4 +1,4 @@
-package SurveyBot;
+package org.smap.surveyModel;
 
 
 

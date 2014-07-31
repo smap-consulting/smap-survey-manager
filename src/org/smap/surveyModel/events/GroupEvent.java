@@ -1,7 +1,9 @@
-package SurveyBot;
+package org.smap.surveyModel.events;
 
-import SurveyBot.SurveyModel.SurveyAction;
-import controller.FormController;
+import org.odk.FormController;
+import org.smap.surveyModel.SurveyModel;
+import org.smap.surveyModel.SurveyModel.SurveyAction;
+
 
 public class GroupEvent implements ISurveyEvent {
 

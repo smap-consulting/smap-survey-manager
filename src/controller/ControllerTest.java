@@ -1,7 +1,12 @@
 package controller;
 
 import java.io.IOException;
-import SurveyBot.SurveyModel;
+
+import org.odk.JavaRosaException;
+import org.smap.surveyModel.AnswerValidator;
+import org.smap.surveyModel.SurveyModel;
+
+
 
 public class ControllerTest {
 
@@ -14,13 +19,20 @@ public class ControllerTest {
 		stepThroughSurvey("data/Household Survey.xml");
 		stepThroughSurvey("data/Demo Form.xml");
 
-		SurveyModel surveyBot = new SurveyModel("data/Household Survey.xml");
+		SurveyModel surveyBot = new SurveyModel("data/String only form.xml");
 		
-		while(!surveyBot.isEndOfSurvey()){
-			System.out.println(surveyBot.getPrompt());
-			surveyBot.answer("hello");
-			System.out.println(surveyBot.getAnsweredXML());
+		
+		System.out.println(surveyBot.getPrompt());
+		try {
+			surveyBot.answer("Plain String");
+		} catch (JavaRosaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		String answeredXML = surveyBot.getAnsweredXML();
+		System.out.println(answeredXML);
+		System.out.println(AnswerValidator.getFirstValueFromTag(answeredXML, "textFieldVanilla"));
 		
 		//answer question
 		

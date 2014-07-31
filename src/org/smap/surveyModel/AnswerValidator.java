@@ -1,4 +1,4 @@
-package unitTest;
+package org.smap.surveyModel;
 
 import java.io.IOException;
 import java.io.StringReader;

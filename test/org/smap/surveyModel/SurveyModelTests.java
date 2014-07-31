@@ -1,16 +1,18 @@
-package unitTest;
+package org.smap.surveyModel;
 
 import static org.junit.Assert.*;
+
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.odk.JavaRosaException;
+import org.smap.surveyModel.SurveyModel;
 
-import controller.JavaRosaException;
 
-import SurveyBot.SurveyModel;
 
-public class StringTests {
+
+public class SurveyModelTests {
 
 	private static SurveyModel surveyBot=null;
 

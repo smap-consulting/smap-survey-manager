@@ -1,8 +1,9 @@
-package SurveyBot;
+package org.smap.surveyModel.events;
 
 import java.util.Vector;
 
 import javax.xml.bind.ValidationException;
+
 
 import org.javarosa.core.model.Constants;
 import org.javarosa.core.model.SelectChoice;
@@ -10,11 +11,14 @@ import org.javarosa.core.model.data.AnswerDataFactory;
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.core.model.data.UncastData;
 import org.javarosa.form.api.FormEntryPrompt;
+import org.odk.FormController;
+import org.odk.JavaRosaException;
+import org.smap.surveyModel.SMSConstants;
+import org.smap.surveyModel.SurveyModel;
+import org.smap.surveyModel.SurveyModel.SurveyAction;
 
-import SurveyBot.SurveyModel.SurveyAction;
 
-import controller.FormController;
-import controller.JavaRosaException;
+
 
 public class QuestionEvent implements ISurveyEvent {
 	

@@ -1,4 +1,4 @@
-package SurveyBot;
+package org.smap.surveyModel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -11,14 +11,19 @@ import java.util.ArrayList;
 
 import javax.xml.bind.ValidationException;
 
+
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
 import org.javarosa.core.services.transport.payload.ByteArrayPayload;
 import org.javarosa.form.api.FormEntryController;
 import org.javarosa.form.api.FormEntryModel;
 import org.javarosa.xform.util.XFormUtils;
-import controller.FormController;
-import controller.JavaRosaException;
+import org.odk.FormController;
+import org.odk.JavaRosaException;
+import org.smap.surveyModel.events.GroupEvent;
+import org.smap.surveyModel.events.ISurveyEvent;
+import org.smap.surveyModel.events.QuestionEvent;
+import org.smap.surveyModel.events.RepeatEvent;
 
 /**
  * @author Scott Wells
