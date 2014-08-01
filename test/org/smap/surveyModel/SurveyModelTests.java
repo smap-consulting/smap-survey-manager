@@ -28,6 +28,11 @@ public class SurveyModelTests {
 	}
 	
 	@Test
+	public void testEmptyPlainStringAnswer() throws JavaRosaException {
+		assertEquals(saveAnswerExtractResult("", "textFieldVanilla"),"");
+	}
+	
+	@Test
 	public void testRequiredStringAnswer() throws JavaRosaException {
 		surveyBot.jumpToNextEvent();
 		assertEquals(saveAnswerExtractResult("Answer Required", "textFieldRequired"),"Answer Required");
@@ -36,7 +41,12 @@ public class SurveyModelTests {
 	@Test
 	public void testRequiredEmptyAnswer() throws JavaRosaException {
 		surveyBot.jumpToNextEvent();
-		assertEquals(saveAnswerExtractResult("", "textFieldRequired"),"");
+		try{
+			surveyBot.answer(null);
+			fail("should throw exception when saving empty in required field");
+		}catch(JavaRosaException e){
+			//expected
+		}
 	}
 	
 	@Test
@@ -44,7 +54,6 @@ public class SurveyModelTests {
 		surveyBot.jumpToNextEvent();
 		surveyBot.answer("Answer Required");
 		saveAnswerExtractResult("Answer Required", "textFieldRequired");
-		logXML();
 		assertEquals(saveAnswerExtractResult("Answer Not Required", "textFieldRequired"),"Answer Not Required");
 	}
 	
@@ -62,8 +71,6 @@ public class SurveyModelTests {
 		surveyBot.answer("Answer Required");
 		surveyBot.jumpToNextEvent();
 		assertEquals(saveAnswerExtractResult("123456", "textFieldLength"),"123456");
-		System.out.println(surveyBot.getFormController().validateAnswers(true));
-		logXML();
 	}
 	
 	@Test
@@ -73,12 +80,12 @@ public class SurveyModelTests {
 		surveyBot.answer("Answer Required");
 		surveyBot.jumpToNextEvent();
 		try{
+		//Answer question with an input that is too short
 		surveyBot.answer("1234");
 		fail();
 		}catch(JavaRosaException e){
 			//Exception expected
 		}
-		logXML();
 	}
 	
 	private String saveAnswerExtractResult(String answer, String tagName) throws JavaRosaException{

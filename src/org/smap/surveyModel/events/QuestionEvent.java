@@ -43,10 +43,17 @@ public class QuestionEvent implements ISurveyEvent {
 	}
 
 	public SurveyAction answer(String answerText) throws JavaRosaException {
-		IAnswerData answerContainer = getAnswerContainer();
-		UncastData uncastData = new UncastData(answerText);
-		IAnswerData answeredContainer = answerContainer.cast(uncastData);
-		int answerResult = formController.answerQuestion(formController.getFormIndex(),answeredContainer);
+		int answerResult=0;
+		
+		if(answerText == null || answerText.equals("")){
+			//try to add empty answer
+			answerResult = formController.answerQuestion(formController.getFormIndex(), null);
+		}else{
+			IAnswerData answerContainer = getAnswerContainer();
+			UncastData uncastData = new UncastData(answerText);
+			IAnswerData answeredContainer = answerContainer.cast(uncastData);
+			answerResult = formController.answerQuestion(formController.getFormIndex(),answeredContainer);	
+		}
 		
 		if(answerResult == FormEntryController.ANSWER_CONSTRAINT_VIOLATED)
 			throw new JavaRosaException(new Exception("Constraint Violated"));
