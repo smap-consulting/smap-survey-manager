@@ -52,7 +52,8 @@ public class SurveyModel {
 	 * @param xformFilePath
 	 * @param savedInstancePath
 	 */
-	public SurveyModel(String xformFilePath, String savedInstancePath, FormIndex index){
+	public SurveyModel(String xformFilePath, String savedInstancePath, FormIndex index, int id){
+		
 		FormDef formDef = createFormDef(xformFilePath);
 		this.formDef=formDef;
 		this.formController = initFormController(formDef, new File(savedInstancePath));
@@ -198,6 +199,10 @@ public class SurveyModel {
 		return formController.postProcessInstance();
 	}
 	
+	public FormController getFormController(){
+		return formController;
+	}
+	
 	public String getAnsweredXML(){
 		try {
 			//First 4 bytes in the string is size information, 
@@ -206,5 +211,9 @@ public class SurveyModel {
 		} catch (IOException e) {
 			return null;
 		}
+	}
+	
+	public void setInstanceId(int id){
+		formController.setInstanceId(id);
 	}
 }

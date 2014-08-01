@@ -17,6 +17,7 @@ public class SurveyModelTests {
 
 	@Before  
 	public void setUp() throws Exception {
+		surveyBot = null;
 		surveyBot = new SurveyModel("data/String only form.xml");
 		assert (surveyBot) != null;
 	}
@@ -33,8 +34,15 @@ public class SurveyModelTests {
 	}
 	
 	@Test
+	public void testRequiredEmptyAnswer() throws JavaRosaException {
+		surveyBot.jumpToNextEvent();
+		assertEquals(saveAnswerExtractResult("", "textFieldRequired"),"");
+	}
+	
+	@Test
 	public void testOverwriteAnswer() throws JavaRosaException{
 		surveyBot.jumpToNextEvent();
+		surveyBot.answer("Answer Required");
 		saveAnswerExtractResult("Answer Required", "textFieldRequired");
 		logXML();
 		assertEquals(saveAnswerExtractResult("Answer Not Required", "textFieldRequired"),"Answer Not Required");
@@ -44,7 +52,33 @@ public class SurveyModelTests {
 	public void testPostSaveMetadata() throws JavaRosaException{
 		surveyBot.setFinalMetadata();
 		logXML();
-		assertNotNull(AnswerValidator.getFirstValueFromTag(surveyBot.getAnsweredXML(),"Date"));
+		assertNotNull(surveyBot.getAnsweredXML());
+	}
+	
+	@Test
+	public void testStringLength() throws JavaRosaException {
+		surveyBot.answer("Plain String");
+		surveyBot.jumpToNextEvent();
+		surveyBot.answer("Answer Required");
+		surveyBot.jumpToNextEvent();
+		assertEquals(saveAnswerExtractResult("123456", "textFieldLength"),"123456");
+		System.out.println(surveyBot.getFormController().validateAnswers(true));
+		logXML();
+	}
+	
+	@Test
+	public void testStringInvalidLength() throws JavaRosaException {
+		surveyBot.answer("Plain String");
+		surveyBot.jumpToNextEvent();
+		surveyBot.answer("Answer Required");
+		surveyBot.jumpToNextEvent();
+		try{
+		surveyBot.answer("1234");
+		fail();
+		}catch(JavaRosaException e){
+			//Exception expected
+		}
+		logXML();
 	}
 	
 	private String saveAnswerExtractResult(String answer, String tagName) throws JavaRosaException{

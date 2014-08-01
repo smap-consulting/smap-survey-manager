@@ -10,6 +10,7 @@ import org.javarosa.core.model.SelectChoice;
 import org.javarosa.core.model.data.AnswerDataFactory;
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.core.model.data.UncastData;
+import org.javarosa.form.api.FormEntryController;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.odk.FormController;
 import org.odk.JavaRosaException;
@@ -45,8 +46,12 @@ public class QuestionEvent implements ISurveyEvent {
 		IAnswerData answerContainer = getAnswerContainer();
 		UncastData uncastData = new UncastData(answerText);
 		IAnswerData answeredContainer = answerContainer.cast(uncastData);
-		formController.answerQuestion(formController.getFormIndex(),answeredContainer);
-		System.out.println(formController.validateAnswers(false));
+		int answerResult = formController.answerQuestion(formController.getFormIndex(),answeredContainer);
+		
+		if(answerResult == FormEntryController.ANSWER_CONSTRAINT_VIOLATED)
+			throw new JavaRosaException(new Exception("Constraint Violated"));
+		else if(answerResult == FormEntryController.ANSWER_REQUIRED_BUT_EMPTY)
+			throw new JavaRosaException(new Exception("Answer is 'Required'"));
 		return SurveyAction.forward;
 	}
 	
