@@ -2,7 +2,10 @@ package org.smap.surveyModel;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 
+
+import org.javarosa.core.model.FormIndex;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -60,7 +63,6 @@ public class SurveyModelTests {
 	@Test
 	public void testPostSaveMetadata() throws JavaRosaException{
 		surveyBot.setFinalMetadata();
-		logXML();
 		assertNotNull(surveyBot.getAnsweredXML());
 	}
 	
@@ -86,6 +88,14 @@ public class SurveyModelTests {
 		}catch(JavaRosaException e){
 			//Exception expected
 		}
+	}
+	
+	@Test
+	public void resumeSavedSurvey() throws JavaRosaException{
+		String answeredXML = surveyBot.getAnsweredXML();
+		File instanceFile = new File("data/savedStringInstance.xml");
+		surveyBot = new SurveyModel("data/String only form.xml",instanceFile, FormIndex.createBeginningOfFormIndex());
+		logXML();
 	}
 	
 	private String saveAnswerExtractResult(String answer, String tagName) throws JavaRosaException{

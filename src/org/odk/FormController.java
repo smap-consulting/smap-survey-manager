@@ -1221,9 +1221,4 @@ public class FormController {
 
         return new InstanceMetadata(instanceId,instanceName);
     }
-    
-    public void setInstanceId(int id){
-    	getInstance().setFormId(id);
-    	getInstance().setID(id);
-    }
 }
