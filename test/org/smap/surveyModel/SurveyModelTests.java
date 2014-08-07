@@ -24,6 +24,45 @@ public class SurveyModelTests {
 		surveyBot = new SurveyModel("data/String only form.xml");
 		assert (surveyBot) != null;
 	}
+	
+	//Detailed method testing
+	@Test
+	public void testGetPrompt() {
+		assertEquals("Text Field Vanilla\n[no restrictions on this field]", surveyBot.getPrompt());
+	}
+
+	
+	@Test
+	public void testGetCurrentIndex() {
+		FormIndex index = surveyBot.getCurrentIndex();
+		assertEquals(0, index.getLocalIndex());
+	}
+
+	@Test
+	public void testJumpToNextEvent() {
+		surveyBot.jumpToNextEvent();
+		FormIndex index = surveyBot.getCurrentIndex();
+		assertEquals(1, index.getLocalIndex());
+	}
+
+	@Test
+	public void testIsEndOfSurvey() {
+		assertFalse(surveyBot.isEndOfSurvey());
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		assertTrue(surveyBot.isEndOfSurvey());
+		
+	}
+
+	@Test
+	public void testGetFullQuestionPromptList() {
+		String[] questionArray = surveyBot.getFullQuestionPromptList();
+		assertEquals("Text Field Vanilla\n[no restrictions on this field]",questionArray[0]);
+		assertEquals("Text Field Required\n[this is a required field]",questionArray[1]);
+	}
+	
+	//end
 
 	@Test
 	public void testPlainStringAnswer() throws JavaRosaException {
