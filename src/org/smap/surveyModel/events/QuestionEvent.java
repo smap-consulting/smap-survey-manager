@@ -17,6 +17,7 @@ import org.odk.JavaRosaException;
 import org.smap.surveyModel.SurveyModel;
 import org.smap.surveyModel.SurveyModel.SurveyAction;
 import org.smap.surveyModel.utils.SMSConstants;
+import org.smap.surveyModel.utils.SurveyMessageConstants;
 
 
 
@@ -25,14 +26,22 @@ public class QuestionEvent implements ISurveyEvent {
 	
 	final private FormEntryPrompt formEntryPrompt;
 	private FormController formController;
+	private boolean invalidAnswerProvided;
+	private String invalidAnswerMessage;
 	
 	public QuestionEvent(FormController formController){
 		this.formController = formController;
 		this.formEntryPrompt = formController.getQuestionPrompt();
+		this.invalidAnswerProvided = false;
 	}
 	
 	public String getPromptText() {
-		StringBuilder sb = new StringBuilder(formEntryPrompt.getShortText());
+		StringBuilder sb = new StringBuilder();
+		if(invalidAnswerProvided){
+			sb.append(invalidAnswerMessage + SMSConstants.NEWLINE);
+			sb.append(SurveyMessageConstants.TRY_AGAIN_TEXT + SMSConstants.NEWLINE);
+		}
+		sb.append(formEntryPrompt.getShortText());
 		if(isChoiceQuestion() || isMulitChoiceQuestion())
 			sb.append(SMSConstants.NEWLINE+getSelectChoicesString());
 		if(formEntryPrompt.getHelpText()!=null){
@@ -42,24 +51,34 @@ public class QuestionEvent implements ISurveyEvent {
 		return sb.toString();
 	}
 
-	public SurveyAction answer(String answerText) throws JavaRosaException {
+	public SurveyAction answer(String answerText){
 		int answerResult=0;
 		
-		if(answerText == null || answerText.equals("")){
-			//try to add empty answer
-			answerResult = formController.answerQuestion(formController.getFormIndex(), null);
-		}else{
-			IAnswerData answerContainer = getAnswerContainer();
-			UncastData uncastData = new UncastData(answerText);
-			IAnswerData answeredContainer = answerContainer.cast(uncastData);
-			answerResult = formController.answerQuestion(formController.getFormIndex(),answeredContainer);	
+		try{
+			if(answerText == null || answerText.equals("")){
+				//try to add empty answer
+				answerResult = formController.answerQuestion(formController.getFormIndex(), null);
+			}else{
+				IAnswerData answerContainer = getAnswerContainer();
+				UncastData uncastData = new UncastData(answerText);
+				IAnswerData answeredContainer = answerContainer.cast(uncastData);
+				answerResult = formController.answerQuestion(formController.getFormIndex(),answeredContainer);	
+			}
+		}catch(JavaRosaException e){
+			flagInvalidAnswer(e.getLocalizedMessage());
 		}
 		
 		if(answerResult == FormEntryController.ANSWER_CONSTRAINT_VIOLATED)
-			throw new JavaRosaException(new Exception("Constraint Violated"));
+			flagInvalidAnswer("Constraint Violated");
 		else if(answerResult == FormEntryController.ANSWER_REQUIRED_BUT_EMPTY)
-			throw new JavaRosaException(new Exception("Answer is 'Required'"));
+			flagInvalidAnswer(SurveyMessageConstants.ANSWER_REQUIRED_TEXT);
+		
 		return SurveyAction.forward;
+	}
+	
+	private void flagInvalidAnswer(String message){
+		invalidAnswerProvided = true;
+		invalidAnswerMessage = message;
 	}
 	
 	public boolean isChoiceQuestion(){

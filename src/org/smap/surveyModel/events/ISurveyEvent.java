@@ -8,6 +8,6 @@ import org.smap.surveyModel.SurveyModel.SurveyAction;
 
 public interface ISurveyEvent {
 	public String getPromptText();
-	public SurveyAction answer(String answerText) throws JavaRosaException;
+	public SurveyAction answer(String answerText);
 	public String info();
 }

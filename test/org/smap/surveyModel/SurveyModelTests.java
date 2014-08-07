@@ -83,12 +83,9 @@ public class SurveyModelTests {
 	@Test
 	public void testRequiredEmptyAnswer() throws JavaRosaException {
 		surveyBot.jumpToNextEvent();
-		try{
-			surveyBot.answer(null);
-			fail("should throw exception when saving empty in required field");
-		}catch(JavaRosaException e){
-			//expected
-		}
+		surveyBot.answer(null);
+		String prompt = surveyBot.getPrompt();
+		assertEquals("Answer is 'Required'.\nPlease try again.\nText Field Required\n[this is a required field]", prompt);
 	}
 	
 	@Test
@@ -120,13 +117,8 @@ public class SurveyModelTests {
 		surveyBot.jumpToNextEvent();
 		surveyBot.answer("Answer Required");
 		surveyBot.jumpToNextEvent();
-		try{
-		//Answer question with an input that is too short
 		surveyBot.answer("1234");
-		fail();
-		}catch(JavaRosaException e){
-			//Exception expected
-		}
+		assertEquals("Constraint Violated\nPlease try again.\nText Field Length\n[Length > 5 && < 10]", surveyBot.getPrompt());
 	}
 	
 	@Test

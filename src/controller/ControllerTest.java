@@ -23,12 +23,7 @@ public class ControllerTest {
 		
 		
 		System.out.println(surveyBot.getPrompt());
-		try {
-			surveyBot.answer("Plain String");
-		} catch (JavaRosaException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		surveyBot.answer("Plain String");
 		
 		String answeredXML = surveyBot.getAnsweredXML();
 		System.out.println(answeredXML);

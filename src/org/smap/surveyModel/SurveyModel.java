@@ -72,7 +72,7 @@ public class SurveyModel {
 		return currentEvent.getPromptText();
 	}
 	
-	public SurveyAction answer(String answerText) throws JavaRosaException{
+	public SurveyAction answer(String answerText){
 		return currentEvent.answer(answerText);
 	}
 	
@@ -255,7 +255,8 @@ public class SurveyModel {
             
             
             /*
-             * Saves select choices, heavily coupled to andriod/collect. 
+             * Saves select choices, heavily coupled to andriod/collect.
+             * TODO add select functionality 
              * 
             // Here we set the Collect's implementation of the IAnswerResolver.
             // We set it back to the default after select choices have been populated.
