@@ -95,7 +95,8 @@ public class SurveyModelTests {
 		String answeredXML = surveyBot.getAnsweredXML();
 		File instanceFile = new File("data/savedStringInstance.xml");
 		surveyBot = new SurveyModel("data/String only form.xml",instanceFile, FormIndex.createBeginningOfFormIndex());
-		logXML();
+		answeredXML = surveyBot.getAnsweredXML();
+		assertEquals(AnswerValidator.getFirstValueFromTag(answeredXML, "textFieldVanilla"),"Plain String");
 	}
 	
 	private String saveAnswerExtractResult(String answer, String tagName) throws JavaRosaException{
