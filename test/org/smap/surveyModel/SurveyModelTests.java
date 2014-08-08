@@ -66,18 +66,6 @@ public class SurveyModelTests {
 		stringSurvey.jumpToNextEvent();
 		stringSurvey.jumpToNextEvent();
 		assertTrue(stringSurvey.isEndOfSurvey());
-/*
-		assertFalse(surveyBot.isEndOfSurvey());
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		assertTrue(surveyBot.isEndOfSurvey());
-*/
-		
 	}
 
 	@Test
@@ -153,12 +141,6 @@ public class SurveyModelTests {
 		groupSurvey.jumpToNextEvent();
 		System.out.println(groupSurvey.getCurrentEvent().getPromptText());
 		assertEquals("Answering Group Q1", saveAnswerExtractResult("Answering Group Q1", "GroupQ1",groupSurvey));
-/*=======
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		assertEquals("Answering Group Q1", saveAnswerExtractResult("Answering Group Q1", "GroupQ1"));
->>>>>>> 63020dd39ccec1f408d4216095c76c6b8ed2cdbd*/
 	}
 	
 	@Test
