@@ -28,7 +28,11 @@ public class SurveyModelTests {
 		byte[] encoded = Files.readAllBytes(Paths.get("data/String only form.xml"));
 		contents = new String(encoded, StandardCharsets.UTF_8);
 		surveyBot = null;
+<<<<<<< HEAD
 		surveyBot = new SurveyModel(contents);
+=======
+		surveyBot = new SurveyModel("data/String only form 2.xml");
+>>>>>>> 37f96fcad20adb0687b4d236abe4752558a39e96
 		assert (surveyBot) != null;
 	}
 	
@@ -58,6 +62,8 @@ public class SurveyModelTests {
 		surveyBot.jumpToNextEvent();
 		surveyBot.jumpToNextEvent();
 		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
 		assertTrue(surveyBot.isEndOfSurvey());
 		
 	}
@@ -73,18 +79,18 @@ public class SurveyModelTests {
 
 	@Test
 	public void testPlainStringAnswer() throws JavaRosaException {
-		assertEquals(saveAnswerExtractResult("Plain String", "textFieldVanilla"),"Plain String");
+		assertEquals("Plain String", saveAnswerExtractResult("Plain String", "textFieldVanilla"));
 	}
 	
 	@Test
 	public void testEmptyPlainStringAnswer() throws JavaRosaException {
-		assertEquals(saveAnswerExtractResult("", "textFieldVanilla"),"");
+		assertEquals("", saveAnswerExtractResult("", "textFieldVanilla"));
 	}
 	
 	@Test
 	public void testRequiredStringAnswer() throws JavaRosaException {
 		surveyBot.jumpToNextEvent();
-		assertEquals(saveAnswerExtractResult("Answer Required", "textFieldRequired"),"Answer Required");
+		assertEquals("Answer Required", saveAnswerExtractResult("Answer Required", "textFieldRequired"));
 	}
 	
 	@Test
@@ -100,7 +106,7 @@ public class SurveyModelTests {
 		surveyBot.jumpToNextEvent();
 		surveyBot.answer("Answer Required");
 		saveAnswerExtractResult("Answer Required", "textFieldRequired");
-		assertEquals(saveAnswerExtractResult("Answer Not Required", "textFieldRequired"),"Answer Not Required");
+		assertEquals("Answer Not Required", saveAnswerExtractResult("Answer Not Required", "textFieldRequired"));
 	}
 	
 	@Test
@@ -115,7 +121,7 @@ public class SurveyModelTests {
 		surveyBot.jumpToNextEvent();
 		surveyBot.answer("Answer Required");
 		surveyBot.jumpToNextEvent();
-		assertEquals(saveAnswerExtractResult("123456", "textFieldLength"),"123456");
+		assertEquals("123456", saveAnswerExtractResult("123456", "textFieldLength"));
 	}
 	
 	@Test
@@ -126,6 +132,15 @@ public class SurveyModelTests {
 		surveyBot.jumpToNextEvent();
 		surveyBot.answer("1234");
 		assertEquals("Constraint Violated\nPlease try again.\nText Field Length\n[Length > 5 && < 10]", surveyBot.getPrompt());
+	}
+	
+	@Test
+	public void testAnswerGroupQuestion() throws JavaRosaException {
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		System.out.println(surveyBot.getCurrentEvent().getPromptText());
+		assertEquals("Answering Group Q1", saveAnswerExtractResult("Answering Group Q1", "GroupQ1"));
 	}
 	
 	@Test
