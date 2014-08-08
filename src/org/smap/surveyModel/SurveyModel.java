@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import javax.xml.bind.ValidationException;
@@ -43,10 +44,10 @@ public class SurveyModel {
 	
 	/**
 	 * Construct a suvey model given xform xml
-	 * @param xformFilePath
+	 * @param xformXML
 	 */
-	public SurveyModel(String xformFilePath){
-		FormDef formDef = createFormDef(xformFilePath);
+	public SurveyModel(String xformXML){
+		FormDef formDef = createFormDef(xformXML);
 		this.formDef=formDef;
 		this.formController = initFormController(formDef,null);
 		jumpToFirstAnswerableQuestion();
@@ -54,11 +55,11 @@ public class SurveyModel {
 	
 	/**
 	 * Reload an existing survey instance
-	 * @param xformFilePath
+	 * @param xformXML
 	 * @param savedInstancePath
 	 */
-	public SurveyModel(String xformFilePath, File savedInstanceXML, FormIndex index){
-		FormDef formDef = createFormDef(xformFilePath);
+	public SurveyModel(String xformXML, String savedInstanceXML, FormIndex index){
+		FormDef formDef = createFormDef(xformXML);
 		this.formDef=formDef;
 		this.formController = initFormController(formDef, savedInstanceXML);
 		this.formController.jumpToIndex(index);
@@ -76,7 +77,7 @@ public class SurveyModel {
 		return currentEvent.answer(answerText);
 	}
 	
-	private FormController initFormController(FormDef formDef, File savedInstanceXML) {
+	private FormController initFormController(FormDef formDef, String savedInstanceXML) {
 		FormEntryModel formEntryModel = new FormEntryModel(formDef);
 		FormEntryController formEntryController = new FormEntryController(formEntryModel);
 		
@@ -98,14 +99,8 @@ public class SurveyModel {
 		return formController.getCaptionPrompt().getIndex();
 	}
 	
-	private FormDef createFormDef(String xformFilePath){
-		FileInputStream inputStream;
-		try {
-			inputStream = new FileInputStream(xformFilePath);
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException("Error: the file '" + xformFilePath
-					+ "' could not be found!");
-		}
+	private FormDef createFormDef(String xformXML){
+		InputStream inputStream = FileUtils.convertStringToInputStream(xformXML);
 		return XFormUtils.getFormFromInputStream(inputStream);
 	}
 	
@@ -236,10 +231,10 @@ public class SurveyModel {
      * @param fec
      * @return
      */
-    private boolean loadSavedInstance(File instanceFile, FormEntryController fec) {
+    private boolean loadSavedInstance(String instanceXML, FormEntryController fec) {
         // convert instance into a byte array
-        byte[] fileBytes = FileUtils.getFileAsBytes(instanceFile);
-
+        byte[] fileBytes = instanceXML.getBytes(Charset.forName("UTF-8"));
+        
         // get the root of the saved and template instances
         TreeElement savedRoot = XFormParser.restoreDataModel(fileBytes,null).getRoot();
         TreeElement templateRoot = fec.getModel().getForm().getInstance().getRoot().deepCopy(true);

@@ -14,6 +14,7 @@
 
 package org.odk;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Static methods used for common file operations.
@@ -113,5 +115,8 @@ public class FileUtils {
 		CharBuffer cBuffer = ByteBuffer.wrap(bytes).asCharBuffer();
     	return cBuffer.toString();
 	}
-
+    
+    public static InputStream convertStringToInputStream(String input){
+    	return new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+    }
 }
