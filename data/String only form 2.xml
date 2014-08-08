@@ -3,17 +3,20 @@
     <h:title>String only form 2</h:title>
     <model>
       <instance>
-        <data id="build_String-only-form-2_1407462086">
+        <data id="build_String-only-form-2_1407469242">
           <meta>
             <instanceID/>
           </meta>
           <textFieldVanilla/>
           <textFieldRequired/>
           <textFieldLength/>
-          <GroupQ1>
+          <GroupQ>
             <GroupQ1/>
             <GroupQ2/>
-          </GroupQ1>
+          </GroupQ>
+          <GroupQRepeat jr:template="">
+            <RepeatQ1/>
+          </GroupQRepeat>
         </data>
       </instance>
       <itext>
@@ -42,20 +45,29 @@
           <text id="/data/textFieldLength:constraintMsg">
             <value>Text Field Length</value>
           </text>
-          <text id="/data/GroupQ1:label">
+          <text id="/data/GroupQ:label">
             <value>GroupQ hint</value>
           </text>
-          <text id="/data/GroupQ1/GroupQ1:label">
+          <text id="/data/GroupQ/GroupQ1:label">
             <value>Group Question 1</value>
           </text>
-          <text id="/data/GroupQ1/GroupQ1:hint">
+          <text id="/data/GroupQ/GroupQ1:hint">
             <value>Group Q 1 hint</value>
           </text>
-          <text id="/data/GroupQ1/GroupQ2:label">
+          <text id="/data/GroupQ/GroupQ2:label">
             <value>Group Question 2</value>
           </text>
-          <text id="/data/GroupQ1/GroupQ2:hint">
+          <text id="/data/GroupQ/GroupQ2:hint">
             <value>Group Q 2 hint</value>
+          </text>
+          <text id="/data/GroupQRepeat:label">
+            <value>Looped group questions</value>
+          </text>
+          <text id="/data/GroupQRepeat/RepeatQ1:label">
+            <value>Repeat 1</value>
+          </text>
+          <text id="/data/GroupQRepeat/RepeatQ1:hint">
+            <value>This is a question in repeat loop group</value>
           </text>
         </translation>
       </itext>
@@ -63,8 +75,9 @@
       <bind nodeset="/data/textFieldVanilla" type="string"/>
       <bind nodeset="/data/textFieldRequired" type="string" required="true()" jr:constraintMsg="jr:itext('/data/textFieldRequired:constraintMsg')"/>
       <bind nodeset="/data/textFieldLength" type="string" constraint="(regex(., &quot;^.{5,10}$&quot;))" jr:constraintMsg="jr:itext('/data/textFieldLength:constraintMsg')"/>
-      <bind nodeset="/data/GroupQ1/GroupQ1" type="string"/>
-      <bind nodeset="/data/GroupQ1/GroupQ2" type="string"/>
+      <bind nodeset="/data/GroupQ/GroupQ1" type="string"/>
+      <bind nodeset="/data/GroupQ/GroupQ2" type="string"/>
+      <bind nodeset="/data/GroupQRepeat/RepeatQ1" type="string"/>
     </model>
   </h:head>
   <h:body>
@@ -81,15 +94,24 @@
       <hint ref="jr:itext('/data/textFieldLength:hint')"/>
     </input>
     <group>
-      <label ref="jr:itext('/data/GroupQ1:label')"/>
-      <input ref="/data/GroupQ1/GroupQ1">
-        <label ref="jr:itext('/data/GroupQ1/GroupQ1:label')"/>
-        <hint ref="jr:itext('/data/GroupQ1/GroupQ1:hint')"/>
+      <label ref="jr:itext('/data/GroupQ:label')"/>
+      <input ref="/data/GroupQ/GroupQ1">
+        <label ref="jr:itext('/data/GroupQ/GroupQ1:label')"/>
+        <hint ref="jr:itext('/data/GroupQ/GroupQ1:hint')"/>
       </input>
-      <input ref="/data/GroupQ1/GroupQ2">
-        <label ref="jr:itext('/data/GroupQ1/GroupQ2:label')"/>
-        <hint ref="jr:itext('/data/GroupQ1/GroupQ2:hint')"/>
+      <input ref="/data/GroupQ/GroupQ2">
+        <label ref="jr:itext('/data/GroupQ/GroupQ2:label')"/>
+        <hint ref="jr:itext('/data/GroupQ/GroupQ2:hint')"/>
       </input>
+    </group>
+    <group>
+      <label ref="jr:itext('/data/GroupQRepeat:label')"/>
+      <repeat nodeset="/data/GroupQRepeat">
+        <input ref="/data/GroupQRepeat/RepeatQ1">
+          <label ref="jr:itext('/data/GroupQRepeat/RepeatQ1:label')"/>
+          <hint ref="jr:itext('/data/GroupQRepeat/RepeatQ1:hint')"/>
+        </input>
+      </repeat>
     </group>
   </h:body>
 </h:html>

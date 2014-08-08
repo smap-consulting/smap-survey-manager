@@ -53,6 +53,8 @@ public class SurveyModelTests {
 		surveyBot.jumpToNextEvent();
 		surveyBot.jumpToNextEvent();
 		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
 		assertTrue(surveyBot.isEndOfSurvey());
 		
 	}
@@ -128,8 +130,33 @@ public class SurveyModelTests {
 		surveyBot.jumpToNextEvent();
 		surveyBot.jumpToNextEvent();
 		surveyBot.jumpToNextEvent();
-		System.out.println(surveyBot.getCurrentEvent().getPromptText());
 		assertEquals("Answering Group Q1", saveAnswerExtractResult("Answering Group Q1", "GroupQ1"));
+	}
+	
+	@Test
+	public void testQuestionEventType() throws JavaRosaException {
+		//System.out.println(surveyBot.getEventInfo().substring(0, 20));
+		assertEquals("Event Type: Question", surveyBot.getEventInfo().substring(0, 20));
+	}
+	
+	@Test
+	public void testGroupEventType() throws JavaRosaException {
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		//System.out.println(surveyBot.getEventInfo().substring(0, 17));
+		assertEquals("Event Type: Group", surveyBot.getEventInfo().substring(0, 17));
+	}
+	
+	@Test
+	public void testRepeatEventType() throws JavaRosaException {
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		//System.out.println(surveyBot.getEventInfo().substring(0, 18));
+		assertEquals("Event Type: Repeat", surveyBot.getEventInfo().substring(0, 18));
 	}
 	
 	@Test
