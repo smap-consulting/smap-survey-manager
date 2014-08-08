@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 
 import org.javarosa.core.model.FormIndex;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.odk.JavaRosaException;
 import org.smap.surveyModel.SurveyModel;
@@ -74,8 +73,6 @@ public class SurveyModelTests {
 		assertEquals("Text Field Required\n[this is a required field]",questionArray[1]);
 	}
 	
-	//end
-
 	@Test
 	public void testPlainStringAnswer() throws JavaRosaException {
 		assertEquals("Plain String", saveAnswerExtractResult("Plain String", "textFieldVanilla",stringSurvey));

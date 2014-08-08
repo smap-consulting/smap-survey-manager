@@ -1,21 +1,14 @@
 package org.smap.surveyModel.events;
 
-import java.util.Vector;
-
-import javax.xml.bind.ValidationException;
-
-
-import org.javarosa.core.model.Constants;
-import org.javarosa.core.model.SelectChoice;
 import org.javarosa.core.model.data.AnswerDataFactory;
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.core.model.data.UncastData;
 import org.javarosa.form.api.FormEntryController;
-import org.javarosa.form.api.FormEntryPrompt;
 import org.odk.FormController;
 import org.odk.JavaRosaException;
-import org.smap.surveyModel.SurveyModel;
 import org.smap.surveyModel.SurveyModel.SurveyAction;
+import org.smap.surveyModel.events.questionTypes.QuestionType;
+import org.smap.surveyModel.events.questionTypes.QuestionTypeFactory;
 import org.smap.surveyModel.utils.SMSConstants;
 import org.smap.surveyModel.utils.SurveyMessageConstants;
 
@@ -24,15 +17,19 @@ import org.smap.surveyModel.utils.SurveyMessageConstants;
 
 public class QuestionEvent implements ISurveyEvent {
 	
-	final private FormEntryPrompt formEntryPrompt;
 	private FormController formController;
 	private boolean invalidAnswerProvided;
 	private String invalidAnswerMessage;
+	private QuestionType question;
 	
 	public QuestionEvent(FormController formController){
 		this.formController = formController;
-		this.formEntryPrompt = formController.getQuestionPrompt();
 		this.invalidAnswerProvided = false;
+		try {
+			this.question = QuestionTypeFactory.getQuestionType(formController);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	public String getPromptText() {
@@ -41,13 +38,7 @@ public class QuestionEvent implements ISurveyEvent {
 			sb.append(invalidAnswerMessage + SMSConstants.NEWLINE);
 			sb.append(SurveyMessageConstants.TRY_AGAIN_TEXT + SMSConstants.NEWLINE);
 		}
-		sb.append(formEntryPrompt.getShortText());
-		if(isChoiceQuestion() || isMulitChoiceQuestion())
-			sb.append(SMSConstants.NEWLINE+getSelectChoicesString());
-		if(formEntryPrompt.getHelpText()!=null){
-			sb.append(SMSConstants.NEWLINE);
-			sb.append(SMSConstants.PRE_HINT+formEntryPrompt.getHelpText()+SMSConstants.POST_HINT);
-		}
+		sb.append(question.getPrompt());
 		return sb.toString();
 	}
 
@@ -81,14 +72,6 @@ public class QuestionEvent implements ISurveyEvent {
 		invalidAnswerMessage = message;
 	}
 	
-	public boolean isChoiceQuestion(){
-		return formEntryPrompt.getDataType()==Constants.DATATYPE_CHOICE;
-	}
-	
-	public boolean isMulitChoiceQuestion(){
-		return formEntryPrompt.getDataType()==Constants.DATATYPE_CHOICE_LIST;
-	}
-	
 	/**Returns an IAnswerData object which can be used to answer the current question
 	 * @return
 	 */
@@ -98,18 +81,9 @@ public class QuestionEvent implements ISurveyEvent {
 
 	public String info() {
 		StringBuilder sb = new StringBuilder("Event Type: Question\n");
+		sb.append(question.info()+"\n");
 		sb.append("Prompt:"+getPromptText()+"\n");
 		sb.append("Answer Type: " + getAnswerContainer().getClass());
-		return sb.toString();
-	}
-	
-	public String getSelectChoicesString(){
-		Vector<SelectChoice> selectChoices = formEntryPrompt.getSelectChoices();
-		StringBuilder sb = new StringBuilder();
-		for(SelectChoice choice : selectChoices){
-			sb.append(formEntryPrompt.getSelectItemText(choice.selection()));
-			sb.append(SMSConstants.NEWLINE);
-		}
 		return sb.toString();
 	}
 }

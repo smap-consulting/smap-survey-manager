@@ -21,6 +21,7 @@ public class SurveyEventTest {
 		assert (surveyBot) != null;
 	}
 	
+	/* Needs rewrite, question type logic has been pushed out of the event
 	//QuestionEvent
 	@Test
 	public void testSelectChoiceString() {
@@ -37,5 +38,5 @@ public class SurveyEventTest {
 		surveyBot.jumpToNextEvent();
 		assertTrue(((QuestionEvent) surveyBot.getCurrentEvent()).isChoiceQuestion());
 	}
-	
+	*/
 }

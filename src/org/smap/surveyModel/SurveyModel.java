@@ -167,6 +167,9 @@ public class SurveyModel {
 	
 	public String[] getFullQuestionPromptList(){
 		ArrayList<String> questionList = new ArrayList<String>();
+		FormIndex currentIndex = getCurrentIndex();
+		formController.jumpToIndex(FormIndex.createBeginningOfFormIndex());
+		jumpToFirstAnswerableQuestion();
 		
 		while(!isEndOfSurvey()){
 			ISurveyEvent event = getCurrentEvent();
@@ -176,6 +179,9 @@ public class SurveyModel {
 			}else
 				jumpToNextEvent();
 		}
+		
+		formController.jumpToIndex(currentIndex);
+		setCurrentEvent();
 		String[] returnArray = new String[questionList.size()]; 
 		return questionList.toArray(returnArray);
 	}
