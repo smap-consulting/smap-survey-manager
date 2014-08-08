@@ -58,6 +58,7 @@ public class SurveyModelTests {
 
 	@Test
 	public void testIsEndOfSurvey() {
+
 		assertFalse(stringSurvey.isEndOfSurvey());
 		stringSurvey.jumpToNextEvent();
 		stringSurvey.jumpToNextEvent();
@@ -65,6 +66,17 @@ public class SurveyModelTests {
 		stringSurvey.jumpToNextEvent();
 		stringSurvey.jumpToNextEvent();
 		assertTrue(stringSurvey.isEndOfSurvey());
+/*
+		assertFalse(surveyBot.isEndOfSurvey());
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		assertTrue(surveyBot.isEndOfSurvey());
+*/
 		
 	}
 
@@ -141,6 +153,38 @@ public class SurveyModelTests {
 		groupSurvey.jumpToNextEvent();
 		System.out.println(groupSurvey.getCurrentEvent().getPromptText());
 		assertEquals("Answering Group Q1", saveAnswerExtractResult("Answering Group Q1", "GroupQ1",groupSurvey));
+/*=======
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		surveyBot.jumpToNextEvent();
+		assertEquals("Answering Group Q1", saveAnswerExtractResult("Answering Group Q1", "GroupQ1"));
+>>>>>>> 63020dd39ccec1f408d4216095c76c6b8ed2cdbd*/
+	}
+	
+	@Test
+	public void testQuestionEventType() throws JavaRosaException {
+		//System.out.println(surveyBot.getEventInfo().substring(0, 20));
+		assertEquals("Event Type: Question", stringSurvey.getEventInfo().substring(0, 20));
+	}
+	
+	@Test
+	public void testGroupEventType() throws JavaRosaException {
+		groupSurvey.jumpToNextEvent();
+		groupSurvey.jumpToNextEvent();
+		groupSurvey.jumpToNextEvent();
+		System.out.println(groupSurvey.getEventInfo().substring(0, 17));
+		assertEquals("Event Type: Group", groupSurvey.getEventInfo().substring(0, 17));
+	}
+	
+	@Test
+	public void testRepeatEventType() throws JavaRosaException {
+		stringSurvey.jumpToNextEvent();
+		stringSurvey.jumpToNextEvent();
+		stringSurvey.jumpToNextEvent();
+		stringSurvey.jumpToNextEvent();
+		stringSurvey.jumpToNextEvent();
+		//System.out.println(surveyBot.getEventInfo().substring(0, 18));
+		assertEquals("Event Type: Repeat", stringSurvey.getEventInfo().substring(0, 18));
 	}
 	
 	@Test
