@@ -20,57 +20,57 @@ import org.smap.surveyModel.utils.AnswerValidator;
 
 public class SurveyModelTests {
 
-	private SurveyModel surveyBot = null;
+	private SurveyModel stringSurvey = null;
+	private SurveyModel groupSurvey = null;
 
 	@Before  
-	public void setUp() throws Exception { 
-		String contents=getStringSuveyXML();
-		byte[] encoded = Files.readAllBytes(Paths.get("data/String only form.xml"));
-		contents = new String(encoded, StandardCharsets.UTF_8);
-		surveyBot = null;
-<<<<<<< HEAD
-		surveyBot = new SurveyModel(contents);
-=======
-		surveyBot = new SurveyModel("data/String only form 2.xml");
->>>>>>> 37f96fcad20adb0687b4d236abe4752558a39e96
-		assert (surveyBot) != null;
+	public void setUp(){ 
+		stringSurvey = createSurvey("data/String only form.xml");
+		groupSurvey = createSurvey("data/String only form 2.xml");
+	}
+	
+	private SurveyModel createSurvey(String surveyXMLFilePath){
+		String contents= readFile(surveyXMLFilePath);
+		SurveyModel model = new SurveyModel(contents);
+		assert (model) != null;
+		return model;
 	}
 	
 	//Detailed method testing
 	@Test
 	public void testGetPrompt() {
-		assertEquals("Text Field Vanilla\n[no restrictions on this field]", surveyBot.getPrompt());
+		assertEquals("Text Field Vanilla\n[no restrictions on this field]", stringSurvey.getPrompt());
 	}
 
 	
 	@Test
 	public void testGetCurrentIndex() {
-		FormIndex index = surveyBot.getCurrentIndex();
+		FormIndex index = stringSurvey.getCurrentIndex();
 		assertEquals(0, index.getLocalIndex());
 	}
 
 	@Test
 	public void testJumpToNextEvent() {
-		surveyBot.jumpToNextEvent();
-		FormIndex index = surveyBot.getCurrentIndex();
+		stringSurvey.jumpToNextEvent();
+		FormIndex index = stringSurvey.getCurrentIndex();
 		assertEquals(1, index.getLocalIndex());
 	}
 
 	@Test
 	public void testIsEndOfSurvey() {
-		assertFalse(surveyBot.isEndOfSurvey());
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		assertTrue(surveyBot.isEndOfSurvey());
+		assertFalse(stringSurvey.isEndOfSurvey());
+		stringSurvey.jumpToNextEvent();
+		stringSurvey.jumpToNextEvent();
+		stringSurvey.jumpToNextEvent();
+		stringSurvey.jumpToNextEvent();
+		stringSurvey.jumpToNextEvent();
+		assertTrue(stringSurvey.isEndOfSurvey());
 		
 	}
 
 	@Test
 	public void testGetFullQuestionPromptList() {
-		String[] questionArray = surveyBot.getFullQuestionPromptList();
+		String[] questionArray = stringSurvey.getFullQuestionPromptList();
 		assertEquals("Text Field Vanilla\n[no restrictions on this field]",questionArray[0]);
 		assertEquals("Text Field Required\n[this is a required field]",questionArray[1]);
 	}
@@ -79,86 +79,86 @@ public class SurveyModelTests {
 
 	@Test
 	public void testPlainStringAnswer() throws JavaRosaException {
-		assertEquals("Plain String", saveAnswerExtractResult("Plain String", "textFieldVanilla"));
+		assertEquals("Plain String", saveAnswerExtractResult("Plain String", "textFieldVanilla",stringSurvey));
 	}
 	
 	@Test
 	public void testEmptyPlainStringAnswer() throws JavaRosaException {
-		assertEquals("", saveAnswerExtractResult("", "textFieldVanilla"));
+		assertEquals("", saveAnswerExtractResult("", "textFieldVanilla",stringSurvey));
 	}
 	
 	@Test
 	public void testRequiredStringAnswer() throws JavaRosaException {
-		surveyBot.jumpToNextEvent();
-		assertEquals("Answer Required", saveAnswerExtractResult("Answer Required", "textFieldRequired"));
+		stringSurvey.jumpToNextEvent();
+		assertEquals("Answer Required", saveAnswerExtractResult("Answer Required", "textFieldRequired",stringSurvey));
 	}
 	
 	@Test
 	public void testRequiredEmptyAnswer() throws JavaRosaException {
-		surveyBot.jumpToNextEvent();
-		surveyBot.answer(null);
-		String prompt = surveyBot.getPrompt();
+		stringSurvey.jumpToNextEvent();
+		stringSurvey.answer(null);
+		String prompt = stringSurvey.getPrompt();
 		assertEquals("Answer is 'Required'.\nPlease try again.\nText Field Required\n[this is a required field]", prompt);
 	}
 	
 	@Test
 	public void testOverwriteAnswer() throws JavaRosaException{
-		surveyBot.jumpToNextEvent();
-		surveyBot.answer("Answer Required");
-		saveAnswerExtractResult("Answer Required", "textFieldRequired");
-		assertEquals("Answer Not Required", saveAnswerExtractResult("Answer Not Required", "textFieldRequired"));
+		stringSurvey.jumpToNextEvent();
+		stringSurvey.answer("Answer Required");
+		saveAnswerExtractResult("Answer Required", "textFieldRequired",stringSurvey);
+		assertEquals("Answer Not Required", saveAnswerExtractResult("Answer Not Required", "textFieldRequired",stringSurvey));
 	}
 	
 	@Test
 	public void testPostSaveMetadata() throws JavaRosaException{
-		surveyBot.setFinalMetadata();
-		assertNotNull(surveyBot.getAnsweredXML());
+		stringSurvey.setFinalMetadata();
+		assertNotNull(stringSurvey.getAnsweredXML());
 	}
 	
 	@Test
 	public void testStringLength() throws JavaRosaException {
-		surveyBot.answer("Plain String");
-		surveyBot.jumpToNextEvent();
-		surveyBot.answer("Answer Required");
-		surveyBot.jumpToNextEvent();
-		assertEquals("123456", saveAnswerExtractResult("123456", "textFieldLength"));
+		stringSurvey.answer("Plain String");
+		stringSurvey.jumpToNextEvent();
+		stringSurvey.answer("Answer Required");
+		stringSurvey.jumpToNextEvent();
+		assertEquals("123456", saveAnswerExtractResult("123456", "textFieldLength",stringSurvey));
 	}
 	
 	@Test
 	public void testStringInvalidLength() throws JavaRosaException {
-		surveyBot.answer("Plain String");
-		surveyBot.jumpToNextEvent();
-		surveyBot.answer("Answer Required");
-		surveyBot.jumpToNextEvent();
-		surveyBot.answer("1234");
-		assertEquals("Constraint Violated\nPlease try again.\nText Field Length\n[Length > 5 && < 10]", surveyBot.getPrompt());
+		stringSurvey.answer("Plain String");
+		stringSurvey.jumpToNextEvent();
+		stringSurvey.answer("Answer Required");
+		stringSurvey.jumpToNextEvent();
+		stringSurvey.answer("1234");
+		assertEquals("Constraint Violated\nPlease try again.\nText Field Length\n[Length > 5 && < 10]", stringSurvey.getPrompt());
 	}
 	
 	@Test
 	public void testAnswerGroupQuestion() throws JavaRosaException {
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		surveyBot.jumpToNextEvent();
-		System.out.println(surveyBot.getCurrentEvent().getPromptText());
-		assertEquals("Answering Group Q1", saveAnswerExtractResult("Answering Group Q1", "GroupQ1"));
+		groupSurvey.jumpToNextEvent();
+		groupSurvey.jumpToNextEvent();
+		groupSurvey.jumpToNextEvent();
+		System.out.println(groupSurvey.getCurrentEvent().getPromptText());
+		assertEquals("Answering Group Q1", saveAnswerExtractResult("Answering Group Q1", "GroupQ1",groupSurvey));
 	}
 	
 	@Test
 	public void resumeSavedSurvey() throws JavaRosaException{
-		String answeredXML = surveyBot.getAnsweredXML();
-		surveyBot = new SurveyModel(getStringSuveyXML(),getSavedInstanceXML(), FormIndex.createBeginningOfFormIndex());
-		answeredXML = surveyBot.getAnsweredXML();
+		String answeredXML = stringSurvey.getAnsweredXML();
+		stringSurvey = new SurveyModel(getStringSuveyXML(),getSavedInstanceXML(), FormIndex.createBeginningOfFormIndex());
+		answeredXML = stringSurvey.getAnsweredXML();
 		assertEquals(AnswerValidator.getFirstValueFromTag(answeredXML, "textFieldVanilla"),"Plain String");
 	}
 	
-	private String saveAnswerExtractResult(String answer, String tagName) throws JavaRosaException{
-		surveyBot.answer(answer);
-		String answeredXML = surveyBot.getAnsweredXML();
+	private String saveAnswerExtractResult(String answer, String tagName, SurveyModel model) throws JavaRosaException{
+		model.answer(answer);
+		String answeredXML = model.getAnsweredXML();
 		return AnswerValidator.getFirstValueFromTag(answeredXML, tagName);
 	}
 	
 	private void logXML(){
-		System.out.println(surveyBot.getAnsweredXML());
+		System.out.println(stringSurvey.getAnsweredXML());
 	}
 	
 	private String getStringSuveyXML(){
