@@ -111,7 +111,7 @@ public class SurveyModel {
 	}
 	
 	/**
-	 *Steps to the next event, will always dive into group questions, but will skip over repeats 
+	 *Steps to the next event,but will skip over repeats 
 	 */
 	public void jumpToNextEvent(){
 		try {

@@ -391,10 +391,9 @@ public class FormController {
     }
 
     public boolean currentPromptIsQuestion() {
-        return (getEvent() == FormEntryController.EVENT_QUESTION
-        		|| ((getEvent() == FormEntryController.EVENT_GROUP ||
-        			 getEvent() == FormEntryController.EVENT_REPEAT)
-        				&& indexIsInFieldList()));
+        return getEvent() == FormEntryController.EVENT_QUESTION
+			|| getEvent() == FormEntryController.EVENT_GROUP 
+			|| getEvent() == FormEntryController.EVENT_REPEAT;
     }
 
     /**

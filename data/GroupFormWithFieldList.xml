@@ -1,0 +1,53 @@
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa">
+  <h:head>
+    <h:title>Untitled Form</h:title>
+    <model>
+      <instance>
+        <data id="build_Untitled-Form_1407474457">
+          <meta>
+            <instanceID/>
+          </meta>
+          <G1>
+            <Q1/>
+            <Q2/>
+          </G1>
+        </data>
+      </instance>
+      <itext>
+        <translation lang="eng">
+          <text id="/data/G1:label">
+            <value>Group1</value>
+          </text>
+          <text id="/data/G1/Q1:label">
+            <value>Q1</value>
+          </text>
+          <text id="/data/G1/Q1:hint">
+            <value>Q1</value>
+          </text>
+          <text id="/data/G1/Q2:label">
+            <value>Q2</value>
+          </text>
+          <text id="/data/G1/Q2:hint">
+            <value>Q2</value>
+          </text>
+        </translation>
+      </itext>
+      <bind nodeset="/data/meta/instanceID" type="string" readonly="true()" calculate="concat('uuid:', uuid())"/>
+      <bind nodeset="/data/G1/Q1" type="string"/>
+      <bind nodeset="/data/G1/Q2" type="string"/>
+    </model>
+  </h:head>
+  <h:body>
+    <group appearance="field-list">
+      <label ref="jr:itext('/data/G1:label')"/>
+      <input ref="/data/G1/Q1">
+        <label ref="jr:itext('/data/G1/Q1:label')"/>
+        <hint ref="jr:itext('/data/G1/Q1:hint')"/>
+      </input>
+      <input ref="/data/G1/Q2">
+        <label ref="jr:itext('/data/G1/Q2:label')"/>
+        <hint ref="jr:itext('/data/G1/Q2:hint')"/>
+      </input>
+    </group>
+  </h:body>
+</h:html>
