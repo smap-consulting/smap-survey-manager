@@ -1,0 +1,75 @@
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa">
+  <h:head>
+    <h:title>Group survey form</h:title>
+    <model>
+      <instance>
+        <data id="build_Group-survey-form_1407471725">
+          <meta>
+            <instanceID/>
+          </meta>
+          <GroupQ>
+            <GroupQ1/>
+            <GroupQ2/>
+          </GroupQ>
+          <GroupQRepeat jr:template="">
+            <RepeatQ1/>
+          </GroupQRepeat>
+        </data>
+      </instance>
+      <itext>
+        <translation lang="eng">
+          <text id="/data/GroupQ:label">
+            <value>GroupQ hint</value>
+          </text>
+          <text id="/data/GroupQ/GroupQ1:label">
+            <value>Group Question 1</value>
+          </text>
+          <text id="/data/GroupQ/GroupQ1:hint">
+            <value>Group Q 1 hint</value>
+          </text>
+          <text id="/data/GroupQ/GroupQ2:label">
+            <value>Group Question 2</value>
+          </text>
+          <text id="/data/GroupQ/GroupQ2:hint">
+            <value>Group Q 2 hint</value>
+          </text>
+          <text id="/data/GroupQRepeat:label">
+            <value>Looped group questions</value>
+          </text>
+          <text id="/data/GroupQRepeat/RepeatQ1:label">
+            <value>Repeat 1</value>
+          </text>
+          <text id="/data/GroupQRepeat/RepeatQ1:hint">
+            <value>This is a question in repeat loop group</value>
+          </text>
+        </translation>
+      </itext>
+      <bind nodeset="/data/meta/instanceID" type="string" readonly="true()" calculate="concat('uuid:', uuid())"/>
+      <bind nodeset="/data/GroupQ/GroupQ1" type="string"/>
+      <bind nodeset="/data/GroupQ/GroupQ2" type="string"/>
+      <bind nodeset="/data/GroupQRepeat/RepeatQ1" type="string"/>
+    </model>
+  </h:head>
+  <h:body>
+    <group>
+      <label ref="jr:itext('/data/GroupQ:label')"/>
+      <input ref="/data/GroupQ/GroupQ1">
+        <label ref="jr:itext('/data/GroupQ/GroupQ1:label')"/>
+        <hint ref="jr:itext('/data/GroupQ/GroupQ1:hint')"/>
+      </input>
+      <input ref="/data/GroupQ/GroupQ2">
+        <label ref="jr:itext('/data/GroupQ/GroupQ2:label')"/>
+        <hint ref="jr:itext('/data/GroupQ/GroupQ2:hint')"/>
+      </input>
+    </group>
+    <group>
+      <label ref="jr:itext('/data/GroupQRepeat:label')"/>
+      <repeat nodeset="/data/GroupQRepeat">
+        <input ref="/data/GroupQRepeat/RepeatQ1">
+          <label ref="jr:itext('/data/GroupQRepeat/RepeatQ1:label')"/>
+          <hint ref="jr:itext('/data/GroupQRepeat/RepeatQ1:hint')"/>
+        </input>
+      </repeat>
+    </group>
+  </h:body>
+</h:html>

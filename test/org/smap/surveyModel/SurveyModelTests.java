@@ -26,7 +26,7 @@ public class SurveyModelTests {
 	@Before  
 	public void setUp(){ 
 		stringSurvey = createSurvey("data/String only form.xml");
-		groupSurvey = createSurvey("data/String only form 2.xml");
+		groupSurvey = createSurvey("data/Group survey form.xml");
 	}
 	
 	private SurveyModel createSurvey(String surveyXMLFilePath){
@@ -136,37 +136,27 @@ public class SurveyModelTests {
 	
 	@Test
 	public void testAnswerGroupQuestion() throws JavaRosaException {
-		groupSurvey.jumpToNextEvent();
-		groupSurvey.jumpToNextEvent();
-		groupSurvey.jumpToNextEvent();
-		System.out.println(groupSurvey.getCurrentEvent().getPromptText());
 		assertEquals("Answering Group Q1", saveAnswerExtractResult("Answering Group Q1", "GroupQ1",groupSurvey));
 	}
 	
 	@Test
 	public void testQuestionEventType() throws JavaRosaException {
-		//System.out.println(surveyBot.getEventInfo().substring(0, 20));
+		//System.out.println(stringSurvey.getEventInfo().substring(0, 20));
 		assertEquals("Event Type: Question", stringSurvey.getEventInfo().substring(0, 20));
 	}
 	
 	@Test
 	public void testGroupEventType() throws JavaRosaException {
-		groupSurvey.jumpToNextEvent();
-		groupSurvey.jumpToNextEvent();
-		groupSurvey.jumpToNextEvent();
-		System.out.println(groupSurvey.getEventInfo().substring(0, 17));
+		//System.out.println(groupSurvey.getEventInfo().substring(0, 17));
 		assertEquals("Event Type: Group", groupSurvey.getEventInfo().substring(0, 17));
 	}
 	
 	@Test
 	public void testRepeatEventType() throws JavaRosaException {
-		stringSurvey.jumpToNextEvent();
-		stringSurvey.jumpToNextEvent();
-		stringSurvey.jumpToNextEvent();
-		stringSurvey.jumpToNextEvent();
-		stringSurvey.jumpToNextEvent();
-		//System.out.println(surveyBot.getEventInfo().substring(0, 18));
-		assertEquals("Event Type: Repeat", stringSurvey.getEventInfo().substring(0, 18));
+		groupSurvey.jumpToNextEvent();
+		groupSurvey.jumpToNextEvent();
+		//System.out.println(groupSurvey.getEventInfo().substring(0, 18));
+		assertEquals("Event Type: Repeat", groupSurvey.getEventInfo().substring(0, 18));
 	}
 	
 	@Test
