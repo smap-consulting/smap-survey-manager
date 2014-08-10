@@ -1,19 +1,20 @@
 package org.smap.surveyModel;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-
 import org.javarosa.core.model.FormIndex;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.odk.JavaRosaException;
-import org.smap.surveyModel.SurveyModel;
 import org.smap.surveyModel.utils.AnswerValidator;
 
 
@@ -151,6 +152,7 @@ public class SurveyModelTests {
 		assertEquals("Event Type: Group", groupSurvey.getEventInfo().substring(0, 17));
 	}
 	
+	@Ignore
 	@Test
 	public void testRepeatEventType() throws JavaRosaException {
 		groupSurvey.jumpToNextEvent();
