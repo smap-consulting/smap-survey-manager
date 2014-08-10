@@ -15,7 +15,7 @@ repositories {
 test {
     testLogging {
         // Show that tests are run in the command-line output
-        events 'failed', 'passed', 'skipped'
+        events 'failed', 'skipped'
     }
 }
 
