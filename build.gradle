@@ -1,0 +1,28 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.7
+version = '0.1'
+
+repositories {
+    mavenCentral()
+
+    flatDir {
+        dirs 'lib'
+    }
+}
+
+test {
+    testLogging {
+        // Show that tests are run in the command-line output
+        events 'failed', 'skipped'
+    }
+}
+
+dependencies {
+    compile name: 'javarosa-libraries'
+    compile group: 'net.sf.kxml', name: 'kxml2', version: '2.3.0'
+    compile group: 'com.google.guava', name: 'guava', version: '12.0'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}

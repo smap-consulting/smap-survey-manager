@@ -1,4 +1,4 @@
-package controller;
+package org.smap;
 
 import java.io.IOException;
 
