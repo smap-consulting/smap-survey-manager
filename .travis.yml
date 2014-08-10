@@ -2,4 +2,4 @@ language: java
 notifications:
   hipchat:
     rooms:
-      secure: B9mEryFV44qtA5YRsc5HEOYRaB6GSF3uZsgL6zApsHGrlbigeB6z7IyRy4Mk5YPEHDyS7J9DXyf1ravqdGiqtmCjvLtv76xVoT4kAw2ai6InHS630/jUNnofYQAjjk1o4twnNV7lhuJ2sOQiT/EA8tuumU7OSpVUjeb/0V3CeAM=
+      secure: Y+WLKfRZ2bmeOkcyO9sGUxg/5Vw00qBFEUdloXl/wdMP/qR0NFxy2xzIeXxxBOv7CBYhUvCkcpfEjzSZdP6Sm0FaJa7fuPnXeL2QSQKVdIWZJlXt+EE4DnlIu2VfEATr6TSsgASW78NdwFeT4vpp7/c08i//SVy2RXt0jYNN1E4=
