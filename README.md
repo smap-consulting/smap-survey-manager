@@ -21,6 +21,14 @@ Uses the FormController class from [ODK Collect](https://code.google.com/p/opend
 
 Install the [Eclipse Gradle plugin](https://github.com/spring-projects/eclipse-integration-gradle/#installing-gradle-tooling-from-update-site).
 
+######WINDOWS
+```
+Install in eclipse using:
+Help -> Install New Software
+Location: http://dist.springsource.com/milestone/TOOLS/gradle
+Install the 'Extensions / Gradle Integration' package
+```
+######MAC:
 ```bash
 git clone git@github.com:smap-consulting/smap-survey-manager.git
 cd smap-survey-manager
