@@ -3,9 +3,9 @@ package org.smap.surveyModel.events.questionTypes;
 
 import org.odk.FormController;
 
-public class SingleChoiceQuestion extends MultiOptionQuestion {
+public class SingleOptionQuestion extends MultiOptionQuestion {
 	
-	public SingleChoiceQuestion(FormController formController) {
+	public SingleOptionQuestion(FormController formController) {
 		super(formController);
 	}
 	

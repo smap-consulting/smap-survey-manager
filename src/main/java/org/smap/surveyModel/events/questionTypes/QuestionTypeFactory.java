@@ -16,7 +16,7 @@ public class QuestionTypeFactory {
 		case Constants.DATATYPE_INTEGER:
 			return new StringQuestion(formController);
 		case Constants.DATATYPE_CHOICE:
-			return new SingleChoiceQuestion(formController);
+			return new SingleOptionQuestion(formController);
 		case Constants.DATATYPE_CHOICE_LIST:
 			return new ChoiceListQuestion(formController);
 		default:
