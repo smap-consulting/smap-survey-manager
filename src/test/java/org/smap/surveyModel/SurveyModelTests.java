@@ -40,7 +40,6 @@ public class SurveyModelTests {
 	public void testGetPrompt() {
 		assertEquals("Text Field Vanilla\n[no restrictions on this field]", stringSurvey.getPrompt());
 	}
-
 	
 	@Test
 	public void testGetCurrentIndex() {
@@ -68,10 +67,9 @@ public class SurveyModelTests {
 	}
 
 	@Test
-	public void testGetFullQuestionPromptList() {
+	public void testGetFullQuestionPromptListLength() {
 		String[] questionArray = stringSurvey.getFullQuestionPromptList();
-		assertEquals("Text Field Vanilla\n[no restrictions on this field]",questionArray[0]);
-		assertEquals("Text Field Required\n[this is a required field]",questionArray[1]);
+		assertEquals(3,questionArray.length);
 	}
 	
 	@Test
