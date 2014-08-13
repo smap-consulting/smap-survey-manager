@@ -6,9 +6,9 @@ import org.javarosa.core.model.SelectChoice;
 import org.odk.FormController;
 import org.smap.surveyModel.utils.SMSConstants;
 
-public class MultiAnswerQuestion extends QuestionTypeImpl {
+public abstract class MultiOptionQuestion extends QuestionTypeImpl {
 	
-	public MultiAnswerQuestion(FormController formController){
+	public MultiOptionQuestion(FormController formController){
 		super(formController);
 	}
 	
