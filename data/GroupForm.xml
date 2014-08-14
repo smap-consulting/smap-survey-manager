@@ -3,7 +3,7 @@
     <h:title>Group survey form</h:title>
     <model>
       <instance>
-        <data id="build_Group-survey-form_1407471725">
+        <data id="build_Group-survey-form_1407990547">
           <meta>
             <instanceID/>
           </meta>
@@ -51,7 +51,7 @@
     </model>
   </h:head>
   <h:body>
-    <group>
+    <group appearance="field-list">
       <label ref="jr:itext('/data/GroupQ:label')"/>
       <input ref="/data/GroupQ/GroupQ1">
         <label ref="jr:itext('/data/GroupQ/GroupQ1:label')"/>

@@ -26,7 +26,7 @@ public class SurveyModelTests {
 	@Before  
 	public void setUp(){ 
 		stringSurvey = createSurvey("data/String only form.xml");
-		groupSurvey = createSurvey("data/GroupFormWithFieldList.xml");
+		groupSurvey = createSurvey("data/GroupForm.xml");
 	}
 	
 	private SurveyModel createSurvey(String surveyXMLFilePath){
@@ -152,7 +152,6 @@ public class SurveyModelTests {
 	
 	@Test
 	public void testRepeatEventType() throws JavaRosaException {
-		groupSurvey.jumpToNextEvent();
 		groupSurvey.jumpToNextEvent();
 		//System.out.println(groupSurvey.getEventInfo().substring(0, 18));
 		assertEquals("Event Type: Repeat", groupSurvey.getEventInfo().substring(0, 18));
