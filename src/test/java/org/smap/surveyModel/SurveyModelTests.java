@@ -150,7 +150,6 @@ public class SurveyModelTests {
 		assertEquals("Event Type: Group", groupSurvey.getEventInfo().substring(0, 17));
 	}
 	
-	@Ignore
 	@Test
 	public void testRepeatEventType() throws JavaRosaException {
 		groupSurvey.jumpToNextEvent();
