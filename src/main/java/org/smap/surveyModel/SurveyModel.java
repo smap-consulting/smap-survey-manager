@@ -63,6 +63,7 @@ public class SurveyModel {
 		this.formDef=formDef;
 		this.formController = initFormController(formDef, savedInstanceXML);
 		this.formController.jumpToIndex(index);
+		this.setCurrentEvent();
 	}
 	
 	/**
