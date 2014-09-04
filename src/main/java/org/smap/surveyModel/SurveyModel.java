@@ -75,8 +75,8 @@ public class SurveyModel {
 	}
 	
 	public void answer(String answerText){
-		//processAction(currentEvent.answer(answerText));
-		currentEvent.answer(answerText);
+		processAction(currentEvent.answer(answerText));
+		//currentEvent.answer(answerText);
 
 	}
 	

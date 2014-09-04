@@ -97,14 +97,6 @@ public class SurveyModelTests {
 	}
 	
 	@Test
-	public void testOverwriteAnswer() throws JavaRosaException{
-		stringSurvey.jumpToNextEvent();
-		stringSurvey.answer("Answer Required");
-		saveAnswerExtractResult("Answer Required", "textFieldRequired",stringSurvey);
-		assertEquals("Answer Not Required", saveAnswerExtractResult("Answer Not Required", "textFieldRequired",stringSurvey));
-	}
-	
-	@Test
 	public void testPostSaveMetadata() throws JavaRosaException{
 		stringSurvey.setFinalMetadata();
 		assertNotNull(stringSurvey.getAnsweredXML());
@@ -113,18 +105,14 @@ public class SurveyModelTests {
 	@Test
 	public void testStringLength() throws JavaRosaException {
 		stringSurvey.answer("Plain String");
-		stringSurvey.jumpToNextEvent();
 		stringSurvey.answer("Answer Required");
-		stringSurvey.jumpToNextEvent();
 		assertEquals("123456", saveAnswerExtractResult("123456", "textFieldLength",stringSurvey));
 	}
 	
 	@Test
 	public void testStringInvalidLength() throws JavaRosaException {
 		stringSurvey.answer("Plain String");
-		stringSurvey.jumpToNextEvent();
 		stringSurvey.answer("Answer Required");
-		stringSurvey.jumpToNextEvent();
 		stringSurvey.answer("1234");
 		assertEquals("Constraint Violated\nPlease try again.\nText Field Length\n[Length > 5 && < 10]", stringSurvey.getPrompt());
 	}

@@ -64,6 +64,8 @@ public class QuestionEvent implements ISurveyEvent {
 		else if(answerResult == FormEntryController.ANSWER_REQUIRED_BUT_EMPTY)
 			flagInvalidAnswer(SurveyMessageConstants.ANSWER_REQUIRED_TEXT);
 		
+		if(invalidAnswerProvided)
+			return SurveyAction.stay;
 		return SurveyAction.forward;
 	}
 	
