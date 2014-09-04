@@ -20,17 +20,6 @@ test {
     }
 }
 
-jar {
-    // bundle dependent jars
-    from {
-        configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
-    } {
-        exclude "META-INF/*.SF"
-        exclude "META-INF/*.DSA"
-        exclude "META-INF/*.RSA"
-    }
-}
-
 dependencies {
     compile name: 'javarosa-libraries'
     compile group: 'net.sf.kxml', name: 'kxml2', version: '2.3.0'
