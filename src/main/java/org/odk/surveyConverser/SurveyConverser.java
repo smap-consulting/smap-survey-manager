@@ -10,7 +10,7 @@ public class SurveyConverser implements SurveyConversation{
 	private SurveyModel surveyModel;
 	
 	public void answerCurrentQuestion(String answerText) {
-		SurveyAction action = surveyModel.answer(answerText);
+		surveyModel.answer(answerText);
 	}
 
 	public String getCurrentQuestion() {

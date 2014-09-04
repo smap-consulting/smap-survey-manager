@@ -74,8 +74,18 @@ public class SurveyModel {
 		return currentEvent.getPromptText();
 	}
 	
-	public SurveyAction answer(String answerText){
-		return currentEvent.answer(answerText);
+	public void answer(String answerText){
+		processAction(currentEvent.answer(answerText));
+	}
+	
+	public void processAction(SurveyAction action){
+		switch(action){
+			case forward:
+				jumpToNextEvent();
+				break;
+			default:
+				break;
+		}
 	}
 	
 	private FormController initFormController(FormDef formDef, String savedInstanceXML) {
