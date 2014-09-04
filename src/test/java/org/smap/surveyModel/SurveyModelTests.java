@@ -129,7 +129,7 @@ public class SurveyModelTests {
 		assertEquals("Constraint Violated\nPlease try again.\nText Field Length\n[Length > 5 && < 10]", stringSurvey.getPrompt());
 	}
 	
-	@Test
+	@Ignore
 	public void testAnswerGroupQuestion() throws JavaRosaException {
 		
 		/* NOT YET IMPLEMENTED

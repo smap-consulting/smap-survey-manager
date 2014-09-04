@@ -106,6 +106,7 @@ public class SurveyModel {
 	}
 	
 	private void jumpToFirstAnswerableQuestion(){
+		getFormController().jumpToIndex(FormIndex.createBeginningOfFormIndex());
 		if(!formController.currentPromptIsQuestion())
 			jumpToNextEvent();
 		setCurrentEvent();
@@ -168,21 +169,17 @@ public class SurveyModel {
 	
 	public String[] getFullQuestionPromptList(){
 		ArrayList<String> questionList = new ArrayList<String>();
-		FormIndex currentIndex = getCurrentIndex();
-		formController.jumpToIndex(FormIndex.createBeginningOfFormIndex());
-		jumpToFirstAnswerableQuestion();
+		SurveyModel model = this;
+		model.jumpToFirstAnswerableQuestion();
 		
-		while(!isEndOfSurvey()){
-			ISurveyEvent event = getCurrentEvent();
-			questionList.add(getCurrentEvent().getPromptText());
-			if(event instanceof RepeatEvent && ((RepeatEvent) event).getRepeatCount() < 2){
-				stepIntoRepeat();
+		while(!model.isEndOfSurvey()){
+			ISurveyEvent event = model.getCurrentEvent();
+			questionList.add(model.getCurrentEvent().getPromptText());
+			if(event instanceof RepeatEvent && ((RepeatEvent) event).getRepeatCount() == 0){
+				model.stepIntoRepeat();
 			}else
-				jumpToNextEvent();
+				model.jumpToNextEvent();
 		}
-		
-		formController.jumpToIndex(currentIndex);
-		setCurrentEvent();
 		String[] returnArray = new String[questionList.size()]; 
 		return questionList.toArray(returnArray);
 	}
