@@ -2,6 +2,7 @@ package org.smap.surveyModel.utils;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 
 
 
@@ -34,6 +35,22 @@ public class AnswerValidator {
 	        Document dDoc = loadXMLFromString(xml);
 	        NodeList nl = dDoc.getElementsByTagName(nodeName);
 	        return nl.item(0).getTextContent();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+	
+	public static String[] valuesFromTag(String xml, String nodeName){
+		DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+		 try {
+	        Document dDoc = loadXMLFromString(xml);
+	        NodeList nl = dDoc.getElementsByTagName(nodeName);
+	        ArrayList<String> al = new ArrayList<String>();
+	        for(int i=0;i<nl.getLength();i++){
+	        	al.add(nl.item(i).getTextContent());
+	        }
+	        return (String[]) al.toArray();
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        return null;
