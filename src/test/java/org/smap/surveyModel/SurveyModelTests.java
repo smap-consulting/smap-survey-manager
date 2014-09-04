@@ -132,6 +132,11 @@ public class SurveyModelTests {
 	}
 	
 	@Test
+	public void testGetSurveyName() throws JavaRosaException {
+		assertEquals("String only form", stringSurvey.getSurveyName());
+	}
+	
+	@Test
 	public void testGroupEventType() throws JavaRosaException {
 		
 		System.out.println(groupSurvey.getEventInfo());

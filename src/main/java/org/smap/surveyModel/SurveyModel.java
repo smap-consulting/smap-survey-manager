@@ -74,6 +74,10 @@ public class SurveyModel {
 		return currentEvent.getPromptText();
 	}
 	
+	public String getSurveyName(){
+		return formDef.getName();
+	}
+	
 	public void answer(String answerText){
 		processAction(currentEvent.answer(answerText));
 		//currentEvent.answer(answerText);
