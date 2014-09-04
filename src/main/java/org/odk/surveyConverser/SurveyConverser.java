@@ -1,9 +1,7 @@
 package org.odk.surveyConverser;
 
-import org.odk.JavaRosaException;
 import org.smap.SurveyConversation;
 import org.smap.surveyModel.SurveyModel;
-import org.smap.surveyModel.SurveyModel.SurveyAction;
 
 public class SurveyConverser implements SurveyConversation{
 
