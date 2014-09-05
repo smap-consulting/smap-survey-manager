@@ -1,18 +1,5 @@
 package org.smap.surveyModel;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-
-import javax.xml.bind.ValidationException;
-
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
 import org.javarosa.core.model.instance.TreeElement;
@@ -30,6 +17,14 @@ import org.smap.surveyModel.events.GroupEvent;
 import org.smap.surveyModel.events.ISurveyEvent;
 import org.smap.surveyModel.events.QuestionEvent;
 import org.smap.surveyModel.events.RepeatEvent;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 /**
  * @author Scott Wells
  *

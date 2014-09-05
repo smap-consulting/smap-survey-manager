@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 
 /**
  * Static methods used for common file operations.
@@ -117,6 +117,6 @@ public class FileUtils {
 	}
     
     public static InputStream convertStringToInputStream(String input){
-    	return new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+    	return new ByteArrayInputStream(input.getBytes(Charset.forName("UTF-8")));
     }
 }

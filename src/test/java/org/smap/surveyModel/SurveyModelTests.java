@@ -1,14 +1,6 @@
 package org.smap.surveyModel;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import com.google.common.io.Files;
 
 import org.javarosa.core.model.FormIndex;
 import org.junit.Before;
@@ -16,6 +8,15 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.odk.JavaRosaException;
 import org.smap.surveyModel.utils.AnswerValidator;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 public class SurveyModelTests {
@@ -106,7 +107,7 @@ public class SurveyModelTests {
 	public void testStringLength() throws JavaRosaException {
 		stringSurvey.answer("Plain String");
 		stringSurvey.answer("Answer Required");
-		assertEquals("123456", saveAnswerExtractResult("123456", "textFieldLength",stringSurvey));
+		assertEquals("123456", saveAnswerExtractResult("123456", "textFieldLength", stringSurvey));
 	}
 	
 	@Test
@@ -179,10 +180,12 @@ public class SurveyModelTests {
 	private String readFile(String path){
 		byte[] encoded=null;
 		try {
-			encoded = Files.readAllBytes(Paths.get(path));
+            File file = new File(path);
+            return Files.toString(file, Charset.forName("UTF-8"));
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new String(encoded, StandardCharsets.UTF_8);
+		return null;
 	}
 }
