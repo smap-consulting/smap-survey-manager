@@ -57,6 +57,7 @@ public class SurveyModel implements Serializable{
 	 * @param savedInstancePath
 	 */
 	public SurveyModel(String xformXML, String savedInstanceXML, FormIndex index){
+		this.xFormXml=xformXML;
 		FormDef formDef = createFormDef(xformXML);
 		this.formDef=formDef;
 		this.formController = initFormController(formDef, savedInstanceXML);
@@ -64,7 +65,7 @@ public class SurveyModel implements Serializable{
 		this.setCurrentEvent();
 	}
 	
-	public String getinitialFormDefXML(){
+	public String getInitialFormDefXML(){
 		return xFormXml;
 	}
 	

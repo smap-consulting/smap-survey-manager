@@ -13,6 +13,7 @@ import org.javarosa.core.model.instance.TreeReference;
 import org.javarosa.core.util.externalizable.DeserializationException;
 import org.javarosa.core.util.externalizable.ExtUtil;
 import org.odk.FileUtils;
+import org.smap.surveyModel.SurveyModel;
 
 public class JRSerializer implements Serializable{
 	
@@ -39,24 +40,36 @@ public class JRSerializer implements Serializable{
 		return new String(baos.toByteArray(), Charset.defaultCharset());
 	}
 	
-	public TreeReference deserializeTreeRef(int localIndexString, String serialzedRef){
+	public static TreeReference deserializeTreeRef(int localIndexString, String serialzedRef){
 		InputStream serializedInput = FileUtils.convertStringToInputStream(serialzedRef);
 		DataInputStream dis = new DataInputStream(serializedInput);
 		TreeReference resumedTreeRef = new TreeReference();
 		try {
 			resumedTreeRef.readExternal(dis, ExtUtil.defaultPrototypes());
 		} catch (IOException | DeserializationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return resumedTreeRef;
 	}
 	
-	public static SurveyModel createSurveyModel(){
+	public static SurveyModel deserializeSurveyModel(String serializedModel){
+		JRSerializer serializer = (JRSerializer) Serializer.fromString(serializedModel);
+		TreeReference treeRef = deserializeTreeRef(serializer.localIndex,serializer.serializedTreeRef);
+		InputStream serializedInput = FileUtils.convertStringToInputStream(serialResult);
+		DataInputStream dis = new DataInputStream(serializedInput);
+		TreeReference resumedTreeRef = new TreeReference();
+		resumedTreeRef.readExternal(dis, ExtUtil.defaultPrototypes());
+		
 		return null;
 	}
 	
-	public static String Serializer(){
-		
+	public static String serializeSurveyModel(SurveyModel model){
+		JRSerializer serializer = new JRSerializer(model.getInitialFormDefXML(), model.getAnsweredXML(), model.getCurrentIndex());
+		try {
+			return Serializer.toString(serializer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
