@@ -22,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
  *
  */
 
-public class SurveyModel {
+public class SurveyModel implements Serializable{
 	public enum SurveyAction{forward, backward, stay, end, start,into,retry};
 	
 	private FormController formController;
