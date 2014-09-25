@@ -175,43 +175,10 @@ public class SurveyModelTests {
 		//Make a survey
 		stringSurvey.answer("Plain String");
 		stringSurvey.answer("Answer Required");
-		int localIndex = stringSurvey.getCurrentIndex().getLocalIndex();
-		
-		
-		String surveyDefinition = getStringSuveyXML();
-		//JRSerializer();
-		
-		
-		
-		FormIndex currentIndex = stringSurvey.getCurrentIndex();
-		String answeredXML = stringSurvey.getAnsweredXML();
-		System.out.println(stringSurvey.getPrompt());
-		TreeReference initialTreeRef = currentIndex.getReference();
-		
-		
-		//Save serialised string
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(baos);
-		initialTreeRef.writeExternal(dos);
-		String serialResult= new String(baos.toByteArray(), Charset.defaultCharset());
-		
-		
-		//Read serialised string
-		InputStream serializedInput = FileUtils.convertStringToInputStream(serialResult);
-		DataInputStream dis = new DataInputStream(serializedInput);
-		TreeReference resumedTreeRef = new TreeReference();
-		resumedTreeRef.readExternal(dis, ExtUtil.defaultPrototypes());
-		
-		
-		
-		FormIndex resumedIndex = new FormIndex(localIndex, resumedTreeRef);
-		String formIndex = answeredXML;
-		
-		
-		//Reload the matrix
-		stringSurvey = new SurveyModel(surveyDefinition, formIndex, resumedIndex);
-		System.out.println(stringSurvey.getPrompt());
-		
+
+		String serializedModel = JRSerializer.serializeSurveyModel(stringSurvey);
+		SurveyModel newSurvey=JRSerializer.deserializeSurveyModel(serializedModel);
+		assertEquals(stringSurvey.getPrompt(),newSurvey.getPrompt());
 	}
 	
 	private String saveAnswerExtractResult(String answer, String tagName, SurveyModel model) throws JavaRosaException{
