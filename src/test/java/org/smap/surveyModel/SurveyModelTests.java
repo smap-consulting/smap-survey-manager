@@ -3,14 +3,25 @@ package org.smap.surveyModel;
 import com.google.common.io.Files;
 
 import org.javarosa.core.model.FormIndex;
+import org.javarosa.core.model.instance.TreeReference;
+import org.javarosa.core.util.externalizable.DeserializationException;
+import org.javarosa.core.util.externalizable.ExtUtil;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.odk.FileUtils;
 import org.odk.JavaRosaException;
 import org.smap.surveyModel.utils.AnswerValidator;
+import org.smap.surveyModel.utils.JRSerializer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import static org.junit.Assert.assertEquals;
@@ -157,6 +168,50 @@ public class SurveyModelTests {
 		stringSurvey = new SurveyModel(getStringSuveyXML(),getSavedInstanceXML(), FormIndex.createBeginningOfFormIndex());
 		answeredXML = stringSurvey.getAnsweredXML();
 		assertEquals(AnswerValidator.getFirstValueFromTag(answeredXML, "textFieldVanilla"),"Plain String");
+	}
+	
+	@Test
+	public void serialTest() throws IOException, ClassNotFoundException, DeserializationException{
+		//Make a survey
+		stringSurvey.answer("Plain String");
+		stringSurvey.answer("Answer Required");
+		int localIndex = stringSurvey.getCurrentIndex().getLocalIndex();
+		
+		
+		String surveyDefinition = getStringSuveyXML();
+		//JRSerializer();
+		
+		
+		
+		FormIndex currentIndex = stringSurvey.getCurrentIndex();
+		String answeredXML = stringSurvey.getAnsweredXML();
+		System.out.println(stringSurvey.getPrompt());
+		TreeReference initialTreeRef = currentIndex.getReference();
+		
+		
+		//Save serialised string
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream dos = new DataOutputStream(baos);
+		initialTreeRef.writeExternal(dos);
+		String serialResult= new String(baos.toByteArray(), Charset.defaultCharset());
+		
+		
+		//Read serialised string
+		InputStream serializedInput = FileUtils.convertStringToInputStream(serialResult);
+		DataInputStream dis = new DataInputStream(serializedInput);
+		TreeReference resumedTreeRef = new TreeReference();
+		resumedTreeRef.readExternal(dis, ExtUtil.defaultPrototypes());
+		
+		
+		
+		FormIndex resumedIndex = new FormIndex(localIndex, resumedTreeRef);
+		String formIndex = answeredXML;
+		
+		
+		//Reload the matrix
+		stringSurvey = new SurveyModel(surveyDefinition, formIndex, resumedIndex);
+		System.out.println(stringSurvey.getPrompt());
+		
 	}
 	
 	private String saveAnswerExtractResult(String answer, String tagName, SurveyModel model) throws JavaRosaException{

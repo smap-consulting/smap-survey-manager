@@ -37,12 +37,14 @@ public class SurveyModel implements Serializable{
 	private FormController formController;
 	private FormDef formDef;
 	private ISurveyEvent currentEvent;
+	private final String xFormXml; 
 	
 	/**
 	 * Construct a suvey model given xform xml
 	 * @param xformXML
 	 */
 	public SurveyModel(String xformXML){
+		this.xFormXml=xformXML;
 		FormDef formDef = createFormDef(xformXML);
 		this.formDef=formDef;
 		this.formController = initFormController(formDef,null);
@@ -60,6 +62,10 @@ public class SurveyModel implements Serializable{
 		this.formController = initFormController(formDef, savedInstanceXML);
 		this.formController.jumpToIndex(index);
 		this.setCurrentEvent();
+	}
+	
+	public String getinitialFormDefXML(){
+		return xFormXml;
 	}
 	
 	/**
