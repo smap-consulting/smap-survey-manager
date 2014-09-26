@@ -36,6 +36,7 @@ public class SurveyConverserTests {
 		String saved = converser.save();
 		
 		converser = SurveyConverser.resume(saved);
+		System.out.println(converser.getAnswers());
 		assertEquals("Text Field Required\n[this is a required field]", 
 				converser.getCurrentQuestion());
 	}
