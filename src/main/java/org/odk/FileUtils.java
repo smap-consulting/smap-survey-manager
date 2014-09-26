@@ -25,6 +25,8 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 
+import com.google.common.io.Files;
+
 /**
  * Static methods used for common file operations.
  *
@@ -125,4 +127,16 @@ public class FileUtils {
     	InputStream inputStream = convertStringToInputStream(string);
     	return new DataInputStream(inputStream);
     }
+    
+    public static String readFileToString(String path){
+		byte[] encoded=null;
+		try {
+            File file = new File(path);
+            return Files.toString(file, Charset.forName("UTF-8"));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

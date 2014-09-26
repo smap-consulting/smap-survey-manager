@@ -1,4 +1,4 @@
-package org.odk.surveyConverser;
+package org.smap.surveyConverser;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
