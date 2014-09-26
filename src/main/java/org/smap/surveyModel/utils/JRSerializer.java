@@ -60,16 +60,19 @@ public class JRSerializer implements Serializable{
 	}
 	
 	public static SurveyModel deserializeSurveyModel(String serializedModel){
-		JRSerializer serializer;
+		JRSerializer serializer = getJRSerializerFromSerializedModel(serializedModel);
+		TreeReference treeRef = deserializeTreeRef(serializer.localIndex,serializer.serializedTreeRef);
+		FormIndex index = new FormIndex(serializer.localIndex, treeRef);
+		return SurveyModel.resumeSurveyModel(serializer.surveyDefXml,serializer.surveyInstanceXml,index);
+	}
+	
+	private static JRSerializer getJRSerializerFromSerializedModel(String serializedModel){
 		try {
-			serializer = (JRSerializer) Serializer.fromString(serializedModel);
+			return (JRSerializer) Serializer.fromString(serializedModel);
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 			return null;
 		}
-		TreeReference treeRef = deserializeTreeRef(serializer.localIndex,serializer.serializedTreeRef);
-		FormIndex index = new FormIndex(serializer.localIndex, treeRef);
-		return SurveyModel.resumeSurveyModel(serializer.surveyDefXml,serializer.surveyInstanceXml,index);
 	}
 	
 	public static String serializeSurveyModel(SurveyModel model){
