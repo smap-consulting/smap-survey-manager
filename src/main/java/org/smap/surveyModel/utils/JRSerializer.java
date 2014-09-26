@@ -46,14 +46,17 @@ public class JRSerializer implements Serializable{
 	
 	public static TreeReference deserializeTreeRef(int localIndexString, String serialzedRef){
 		TreeReference resumedTreeRef = new TreeReference();
+		readStringIntoTreeReference(resumedTreeRef, serialzedRef);
+		return resumedTreeRef;
+	}
+	
+	private static void readStringIntoTreeReference(TreeReference treeRef, String serialzedTreeRef){
 		try {
-			resumedTreeRef.readExternal(
-					FileUtils.convertStringToDataInputStream(serialzedRef), 
+			treeRef.readExternal(FileUtils.convertStringToDataInputStream(serialzedTreeRef), 
 					ExtUtil.defaultPrototypes());
 		} catch (IOException | DeserializationException e) {
 			e.printStackTrace();
 		}
-		return resumedTreeRef;
 	}
 	
 	public static SurveyModel deserializeSurveyModel(String serializedModel){
@@ -78,5 +81,4 @@ public class JRSerializer implements Serializable{
 		}
 		return null;
 	}
-	
 }
