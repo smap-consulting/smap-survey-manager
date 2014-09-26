@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
+import com.google.common.io.*;
 
 /*
  * This code has been sourced from code found at 
@@ -16,8 +16,8 @@ import java.io.Serializable;
 
 public class Serializer {
 	/** Read the object from Base64 string. */
-	public static Object fromString( String s ) throws IOException ,ClassNotFoundException {
-        byte [] data = Base64Coder.decode( s );
+	public static Object fromString( String s ) throws IOException, ClassNotFoundException {
+		byte [] data = BaseEncoding.base64().decode(s);
         ObjectInputStream ois = new ObjectInputStream( 
                                         new ByteArrayInputStream(  data ) );
         Object o  = ois.readObject();
@@ -31,6 +31,6 @@ public class Serializer {
         ObjectOutputStream oos = new ObjectOutputStream( baos );
         oos.writeObject( o );
         oos.close();
-        return new String( Base64Coder.encode( baos.toByteArray() ) );
+        return new String(BaseEncoding.base64().encode( baos.toByteArray() ) );
     }
 }
