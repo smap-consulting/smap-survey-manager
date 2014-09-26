@@ -32,20 +32,24 @@ public class JRSerializer implements Serializable{
 	public static String serializeTreeRef(TreeReference treeRef){
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
-        try {
+        writeTreeRefToOutputStream(treeRef,dos);
+		return new String(baos.toByteArray(), Charset.defaultCharset());
+	}
+	
+	private static void writeTreeRefToOutputStream(TreeReference treeRef, DataOutputStream dos){
+		try {
 			treeRef.writeExternal(dos);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new String(baos.toByteArray(), Charset.defaultCharset());
 	}
 	
 	public static TreeReference deserializeTreeRef(int localIndexString, String serialzedRef){
-		InputStream serializedInput = FileUtils.convertStringToInputStream(serialzedRef);
-		DataInputStream dis = new DataInputStream(serializedInput);
 		TreeReference resumedTreeRef = new TreeReference();
 		try {
-			resumedTreeRef.readExternal(dis, ExtUtil.defaultPrototypes());
+			resumedTreeRef.readExternal(
+					FileUtils.convertStringToDataInputStream(serialzedRef), 
+					ExtUtil.defaultPrototypes());
 		} catch (IOException | DeserializationException e) {
 			e.printStackTrace();
 		}
@@ -62,7 +66,7 @@ public class JRSerializer implements Serializable{
 		}
 		TreeReference treeRef = deserializeTreeRef(serializer.localIndex,serializer.serializedTreeRef);
 		FormIndex index = new FormIndex(serializer.localIndex, treeRef);
-		return new SurveyModel(serializer.surveyDefXml,serializer.surveyInstanceXml,index);
+		return SurveyModel.resumeSurveyModel(serializer.surveyDefXml,serializer.surveyInstanceXml,index);
 	}
 	
 	public static String serializeSurveyModel(SurveyModel model){
@@ -74,4 +78,5 @@ public class JRSerializer implements Serializable{
 		}
 		return null;
 	}
+	
 }

@@ -15,6 +15,7 @@
 package org.odk;
 
 import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -118,5 +119,10 @@ public class FileUtils {
     
     public static InputStream convertStringToInputStream(String input){
     	return new ByteArrayInputStream(input.getBytes(Charset.forName("UTF-8")));
+    }
+    
+    public static DataInputStream convertStringToDataInputStream(String string){
+    	InputStream inputStream = convertStringToInputStream(string);
+    	return new DataInputStream(inputStream);
     }
 }

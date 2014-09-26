@@ -1,33 +1,24 @@
 package org.smap.surveyModel;
 
-import com.google.common.io.Files;
-
-import org.javarosa.core.model.FormIndex;
-import org.javarosa.core.model.instance.TreeReference;
-import org.javarosa.core.util.externalizable.DeserializationException;
-import org.javarosa.core.util.externalizable.ExtUtil;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.odk.FileUtils;
-import org.odk.JavaRosaException;
-import org.smap.surveyModel.utils.AnswerValidator;
-import org.smap.surveyModel.utils.JRSerializer;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+
+import org.javarosa.core.model.FormIndex;
+import org.javarosa.core.util.externalizable.DeserializationException;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.odk.JavaRosaException;
+import org.smap.surveyModel.utils.AnswerValidator;
+import org.smap.surveyModel.utils.JRSerializer;
+
+import com.google.common.io.Files;
 
 
 public class SurveyModelTests {
