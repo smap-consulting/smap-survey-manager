@@ -23,6 +23,6 @@ test {
 dependencies {
     compile name: 'javarosa-libraries'
     compile group: 'net.sf.kxml', name: 'kxml2', version: '2.3.0'
-    compile group: 'com.google.guava', name: 'guava', version: '12.0'
+    compile group: 'com.google.guava', name: 'guava', version: '18.0'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }

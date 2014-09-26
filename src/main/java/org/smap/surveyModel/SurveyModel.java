@@ -22,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -30,22 +31,32 @@ import java.util.ArrayList;
  *
  */
 
-public class SurveyModel {
+public class SurveyModel{
 	public enum SurveyAction{forward, backward, stay, end, start,into,retry};
 	
 	private FormController formController;
 	private FormDef formDef;
 	private ISurveyEvent currentEvent;
+	private final String xFormXml; 
+	
+	public static SurveyModel createSurveyModelFromXform(String xformXML){
+		return new SurveyModel(xformXML);
+	}
 	
 	/**
 	 * Construct a suvey model given xform xml
 	 * @param xformXML
 	 */
-	public SurveyModel(String xformXML){
+	private SurveyModel(String xformXML){
+		this.xFormXml=xformXML;
 		FormDef formDef = createFormDef(xformXML);
 		this.formDef=formDef;
 		this.formController = initFormController(formDef,null);
 		jumpToFirstAnswerableQuestion();
+	}
+	
+	public static SurveyModel resumeSurveyModel(String xformXML, String savedInstanceXML, FormIndex index){
+		return new SurveyModel(xformXML, savedInstanceXML, index);
 	}
 	
 	/**
@@ -53,12 +64,17 @@ public class SurveyModel {
 	 * @param xformXML
 	 * @param savedInstancePath
 	 */
-	public SurveyModel(String xformXML, String savedInstanceXML, FormIndex index){
+	private SurveyModel(String xformXML, String savedInstanceXML, FormIndex index){
+		this.xFormXml=xformXML;
 		FormDef formDef = createFormDef(xformXML);
 		this.formDef=formDef;
 		this.formController = initFormController(formDef, savedInstanceXML);
 		this.formController.jumpToIndex(index);
 		this.setCurrentEvent();
+	}
+	
+	public String getInitialFormDefXML(){
+		return xFormXml;
 	}
 	
 	/**
@@ -230,6 +246,7 @@ public class SurveyModel {
 			return null;
 		}
 	}
+	
 	
 	
     /**  

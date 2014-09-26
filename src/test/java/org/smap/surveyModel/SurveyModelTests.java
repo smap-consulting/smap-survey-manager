@@ -1,22 +1,24 @@
 package org.smap.surveyModel;
 
-import com.google.common.io.Files;
-
-import org.javarosa.core.model.FormIndex;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.odk.JavaRosaException;
-import org.smap.surveyModel.utils.AnswerValidator;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.javarosa.core.model.FormIndex;
+import org.javarosa.core.util.externalizable.DeserializationException;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.odk.JavaRosaException;
+import org.smap.surveyModel.utils.AnswerValidator;
+import org.smap.surveyModel.utils.JRSerializer;
+
+import com.google.common.io.Files;
 
 
 public class SurveyModelTests {
@@ -32,7 +34,7 @@ public class SurveyModelTests {
 	
 	private SurveyModel createSurvey(String surveyXMLFilePath){
 		String contents= readFile(surveyXMLFilePath);
-		SurveyModel model = new SurveyModel(contents);
+		SurveyModel model = SurveyModel.createSurveyModelFromXform(contents);
 		assert (model) != null;
 		return model;
 	}
@@ -154,9 +156,20 @@ public class SurveyModelTests {
 	@Test
 	public void resumeSavedSurvey() throws JavaRosaException{
 		String answeredXML = stringSurvey.getAnsweredXML();
-		stringSurvey = new SurveyModel(getStringSuveyXML(),getSavedInstanceXML(), FormIndex.createBeginningOfFormIndex());
+		stringSurvey = SurveyModel.resumeSurveyModel(getStringSuveyXML(),getSavedInstanceXML(), FormIndex.createBeginningOfFormIndex());
 		answeredXML = stringSurvey.getAnsweredXML();
 		assertEquals(AnswerValidator.getFirstValueFromTag(answeredXML, "textFieldVanilla"),"Plain String");
+	}
+	
+	@Test
+	public void serialTest() throws IOException, ClassNotFoundException, DeserializationException{
+		//Make a survey
+		stringSurvey.answer("Plain String");
+		stringSurvey.answer("Answer Required");
+
+		String serializedModel = JRSerializer.serializeSurveyModel(stringSurvey);
+		SurveyModel newSurvey=JRSerializer.deserializeSurveyModel(serializedModel);
+		assertEquals(stringSurvey.getPrompt(),newSurvey.getPrompt());
 	}
 	
 	private String saveAnswerExtractResult(String answer, String tagName, SurveyModel model) throws JavaRosaException{

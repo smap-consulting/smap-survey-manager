@@ -15,6 +15,7 @@
 package org.odk;
 
 import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,6 +24,8 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
+
+import com.google.common.io.Files;
 
 /**
  * Static methods used for common file operations.
@@ -119,4 +122,21 @@ public class FileUtils {
     public static InputStream convertStringToInputStream(String input){
     	return new ByteArrayInputStream(input.getBytes(Charset.forName("UTF-8")));
     }
+    
+    public static DataInputStream convertStringToDataInputStream(String string){
+    	InputStream inputStream = convertStringToInputStream(string);
+    	return new DataInputStream(inputStream);
+    }
+    
+    public static String readFileToString(String path){
+		byte[] encoded=null;
+		try {
+            File file = new File(path);
+            return Files.toString(file, Charset.forName("UTF-8"));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

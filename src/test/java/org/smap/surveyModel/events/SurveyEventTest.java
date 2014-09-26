@@ -3,12 +3,8 @@ package org.smap.surveyModel.events;
 /** Temporary class, may get consolidate into other test classes.
  * 
  */
-import static org.junit.Assert.*;
-
 import org.junit.Before;
-import org.junit.Test;
 import org.smap.surveyModel.SurveyModel;
-import org.smap.surveyModel.utils.AnswerValidator;
 
 public class SurveyEventTest {
 
@@ -17,7 +13,7 @@ public class SurveyEventTest {
 	@Before  
 	public void setUp() throws Exception {
 		surveyBot = null;
-		surveyBot = new SurveyModel("data/multiple_choice_form.xml");
+		surveyBot = SurveyModel.createSurveyModelFromXform("data/multiple_choice_form.xml");
 		assert (surveyBot) != null;
 	}
 	
