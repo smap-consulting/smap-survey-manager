@@ -17,7 +17,7 @@ public class SurveyEventTest {
 	@Before  
 	public void setUp() throws Exception {
 		surveyBot = null;
-		surveyBot = new SurveyModel("data/multiple_choice_form.xml");
+		surveyBot = SurveyModel.createSurveyModelFromXform("data/multiple_choice_form.xml");
 		assert (surveyBot) != null;
 	}
 	

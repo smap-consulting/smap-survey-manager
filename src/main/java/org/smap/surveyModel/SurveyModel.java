@@ -31,7 +31,7 @@ import java.util.ArrayList;
  *
  */
 
-public class SurveyModel implements Serializable{
+public class SurveyModel{
 	public enum SurveyAction{forward, backward, stay, end, start,into,retry};
 	
 	private FormController formController;
@@ -39,11 +39,15 @@ public class SurveyModel implements Serializable{
 	private ISurveyEvent currentEvent;
 	private final String xFormXml; 
 	
+	public static SurveyModel createSurveyModelFromXform(String xformXML){
+		return new SurveyModel(xformXML);
+	}
+	
 	/**
 	 * Construct a suvey model given xform xml
 	 * @param xformXML
 	 */
-	public SurveyModel(String xformXML){
+	private SurveyModel(String xformXML){
 		this.xFormXml=xformXML;
 		FormDef formDef = createFormDef(xformXML);
 		this.formDef=formDef;
@@ -51,12 +55,16 @@ public class SurveyModel implements Serializable{
 		jumpToFirstAnswerableQuestion();
 	}
 	
+	public static SurveyModel resumeSurveyModel(String xformXML, String savedInstanceXML, FormIndex index){
+		return new SurveyModel(xformXML, savedInstanceXML, index);
+	}
+	
 	/**
 	 * Reload an existing survey instance
 	 * @param xformXML
 	 * @param savedInstancePath
 	 */
-	public SurveyModel(String xformXML, String savedInstanceXML, FormIndex index){
+	private SurveyModel(String xformXML, String savedInstanceXML, FormIndex index){
 		this.xFormXml=xformXML;
 		FormDef formDef = createFormDef(xformXML);
 		this.formDef=formDef;
@@ -238,6 +246,7 @@ public class SurveyModel implements Serializable{
 			return null;
 		}
 	}
+	
 	
 	
     /**  

@@ -43,7 +43,7 @@ public class SurveyModelTests {
 	
 	private SurveyModel createSurvey(String surveyXMLFilePath){
 		String contents= readFile(surveyXMLFilePath);
-		SurveyModel model = new SurveyModel(contents);
+		SurveyModel model = SurveyModel.createSurveyModelFromXform(contents);
 		assert (model) != null;
 		return model;
 	}
@@ -165,7 +165,7 @@ public class SurveyModelTests {
 	@Test
 	public void resumeSavedSurvey() throws JavaRosaException{
 		String answeredXML = stringSurvey.getAnsweredXML();
-		stringSurvey = new SurveyModel(getStringSuveyXML(),getSavedInstanceXML(), FormIndex.createBeginningOfFormIndex());
+		stringSurvey = SurveyModel.resumeSurveyModel(getStringSuveyXML(),getSavedInstanceXML(), FormIndex.createBeginningOfFormIndex());
 		answeredXML = stringSurvey.getAnsweredXML();
 		assertEquals(AnswerValidator.getFirstValueFromTag(answeredXML, "textFieldVanilla"),"Plain String");
 	}
