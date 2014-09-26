@@ -54,7 +54,9 @@ public class JRSerializer implements Serializable{
 		try {
 			treeRef.readExternal(FileUtils.convertStringToDataInputStream(serialzedTreeRef), 
 					ExtUtil.defaultPrototypes());
-		} catch (IOException | DeserializationException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (DeserializationException e) {
 			e.printStackTrace();
 		}
 	}
@@ -69,10 +71,13 @@ public class JRSerializer implements Serializable{
 	private static JRSerializer getJRSerializerFromSerializedModel(String serializedModel){
 		try {
 			return (JRSerializer) Serializer.fromString(serializedModel);
-		} catch (ClassNotFoundException | IOException e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		
+		return null;
 	}
 	
 	public static String serializeSurveyModel(SurveyModel model){
