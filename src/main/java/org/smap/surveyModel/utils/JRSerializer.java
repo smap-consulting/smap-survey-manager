@@ -17,6 +17,7 @@ import org.smap.surveyModel.SurveyModel;
 
 public class JRSerializer implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private String surveyDefXml;
 	private String surveyInstanceXml;
 	private String serializedTreeRef;
