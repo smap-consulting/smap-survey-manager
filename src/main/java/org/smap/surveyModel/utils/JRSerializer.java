@@ -28,12 +28,17 @@ public class JRSerializer implements Serializable {
 		this.surveyDefXml = surveyDefXml;
 		this.surveyInstanceXml = surveyInstanceXml;
 		this.localIndex = index.getLocalIndex();
-		this.serializedTreeRef = serializeTreeRef(index.getReference());
+        TreeReference treeReference = index.getReference();
+
+        if (treeReference != null) {
+            this.serializedTreeRef = serializeTreeRef(index.getReference());
+        }
 	}
 
 	public static String serializeTreeRef(TreeReference treeRef) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream dos = new DataOutputStream(baos);
+
 		writeTreeRefToOutputStream(treeRef, dos);
 		return new String(baos.toByteArray(), Charset.defaultCharset());
 	}

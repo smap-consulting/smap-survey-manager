@@ -3,6 +3,7 @@ package org.smap.surveyConverser;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
+import org.smap.DialogueHandler;
 import org.smap.SurveyConversation;
 import org.smap.surveyModel.SurveyModel;
 import org.smap.surveyModel.utils.JRSerializer;
@@ -12,7 +13,7 @@ public class SurveyConverser implements SurveyConversation {
 	private SurveyModel surveyModel;
 
 	public static SurveyConverser createNewSurveyConverser(
-			String surveyDefinitionXML) {
+            String surveyDefinitionXML) {
 		return new SurveyConverser(surveyDefinitionXML);
 	}
 
@@ -20,6 +21,31 @@ public class SurveyConverser implements SurveyConversation {
 		return new SurveyConverser(
 				JRSerializer.deserializeSurveyModel(savedConverser));
 	}
+
+    public static void beginDialogue(DialogueHandler handler) {
+        SurveyConverser converser = createNewSurveyConverser(handler.getFormXml());
+
+        handler.recordSurveyDetails(converser);
+        handler.saveData(converser.save(), converser.getAnswers());
+
+        handler.reply(converser.getCurrentQuestion());
+    }
+
+    public static void handleDialog(DialogueHandler handler) {
+        SurveyConverser converser = resume(handler.loadData());
+
+        converser.answerCurrentQuestion(handler.getAnswerText());
+
+        if (! converser.isComplete()) {
+            handler.reply(converser.getCurrentQuestion());
+        }
+        handler.saveData(converser.save(), converser.getAnswers());
+        handler.recordSurveyDetails(converser);
+
+        if (converser.isComplete()) {
+            handler.handleComplete();
+        }
+    }
 
 	public String save() {
 		return JRSerializer.serializeSurveyModel(this.surveyModel);
