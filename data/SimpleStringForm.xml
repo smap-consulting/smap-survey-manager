@@ -1,0 +1,60 @@
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa">
+  <h:head>
+    <h:title>String Only Form</h:title>
+    <model>
+      <instance>
+        <data id="build_String-Only-Form_1412128231">
+          <meta>
+            <instanceID/>
+          </meta>
+          <Q1/>
+          <Q2/>
+          <Q3/>
+        </data>
+      </instance>
+      <itext>
+        <translation lang="eng">
+          <text id="/data/Q1:label">
+            <value>What is your name?</value>
+          </text>
+          <text id="/data/Q1:hint">
+            <value>any string</value>
+          </text>
+          <text id="/data/Q2:label">
+            <value>What is you Blockbuster account name?</value>
+          </text>
+          <text id="/data/Q2:hint">
+            <value>required</value>
+          </text>
+          <text id="/data/Q3:label">
+            <value>The cow goes ... ?</value>
+          </text>
+          <text id="/data/Q3:hint">
+            <value>must be 3 letters</value>
+          </text>
+          <text id="/data/Q3:constraintMsg">
+            <value>The cow goes MOO!</value>
+          </text>
+        </translation>
+      </itext>
+      <bind nodeset="/data/meta/instanceID" type="string" readonly="true()" calculate="concat('uuid:', uuid())"/>
+      <bind nodeset="/data/Q1" type="string"/>
+      <bind nodeset="/data/Q2" type="string" required="true()"/>
+      <bind nodeset="/data/Q3" type="string" constraint="(regex(., &quot;^.{3,3}$&quot;))" jr:constraintMsg="jr:itext('/data/Q3:constraintMsg')"/>
+    </model>
+  </h:head>
+  <h:body>
+    <input ref="/data/Q1">
+      <label ref="jr:itext('/data/Q1:label')"/>
+      <hint ref="jr:itext('/data/Q1:hint')"/>
+    </input>
+    <input ref="/data/Q2">
+      <label ref="jr:itext('/data/Q2:label')"/>
+      <hint ref="jr:itext('/data/Q2:hint')"/>
+    </input>
+    <input ref="/data/Q3">
+      <label ref="jr:itext('/data/Q3:label')"/>
+      <hint ref="jr:itext('/data/Q3:hint')"/>
+    </input>
+  </h:body>
+</h:html>

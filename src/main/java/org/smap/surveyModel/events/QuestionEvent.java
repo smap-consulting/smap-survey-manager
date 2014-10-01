@@ -16,12 +16,12 @@ import org.smap.surveyModel.utils.SurveyMessageConstants;
 
 
 public class QuestionEvent implements ISurveyEvent {
-	
+
 	private FormController formController;
 	private boolean invalidAnswerProvided;
 	private String invalidAnswerMessage;
 	private QuestionType question;
-	
+
 	public QuestionEvent(FormController formController){
 		this.formController = formController;
 		this.invalidAnswerProvided = false;
@@ -31,7 +31,7 @@ public class QuestionEvent implements ISurveyEvent {
 			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	public String getPromptText() {
 		StringBuilder sb = new StringBuilder();
 		if(invalidAnswerProvided){
@@ -44,7 +44,7 @@ public class QuestionEvent implements ISurveyEvent {
 
 	public SurveyAction answer(String answerText){
 		int answerResult=0;
-		
+
 		try{
 			if(answerText == null || answerText.equals("")){
 				//try to add empty answer
@@ -53,27 +53,30 @@ public class QuestionEvent implements ISurveyEvent {
 				IAnswerData answerContainer = getAnswerContainer();
 				UncastData uncastData = new UncastData(answerText);
 				IAnswerData answeredContainer = answerContainer.cast(uncastData);
-				answerResult = formController.answerQuestion(formController.getFormIndex(),answeredContainer);	
+				answerResult = formController.answerQuestion(formController.getFormIndex(),answeredContainer);
 			}
 		}catch(JavaRosaException e){
 			flagInvalidAnswer(e.getLocalizedMessage());
 		}
-		
-		if(answerResult == FormEntryController.ANSWER_CONSTRAINT_VIOLATED)
-			flagInvalidAnswer("Constraint Violated");
-		else if(answerResult == FormEntryController.ANSWER_REQUIRED_BUT_EMPTY)
+
+		if(answerResult == FormEntryController.ANSWER_CONSTRAINT_VIOLATED){
+            String customText = formController.getQuestionPromptConstraintText(formController.getFormIndex());
+            if(customText!=null)
+                flagInvalidAnswer(customText);
+            else
+                flagInvalidAnswer("Constraint Violated");
+        }else if(answerResult == FormEntryController.ANSWER_REQUIRED_BUT_EMPTY)
 			flagInvalidAnswer(SurveyMessageConstants.ANSWER_REQUIRED_TEXT);
-		
 		if(invalidAnswerProvided)
 			return SurveyAction.stay;
 		return SurveyAction.forward;
 	}
-	
+
 	private void flagInvalidAnswer(String message){
 		invalidAnswerProvided = true;
 		invalidAnswerMessage = message;
 	}
-	
+
 	/**Returns an IAnswerData object which can be used to answer the current question
 	 * @return
 	 */

@@ -25,11 +25,13 @@ public class SurveyModelTests {
 
 	private SurveyModel stringSurvey = null;
 	private SurveyModel groupSurvey = null;
+    private SurveyModel simpleSurvey = null;
 
 	@Before
 	public void setUp(){
 		stringSurvey = createSurvey("data/String only form.xml");
 		groupSurvey = createSurvey("data/GroupForm.xml");
+        simpleSurvey = createSurvey("data/SimpleStringForm.xml");
 	}
 
 	private SurveyModel createSurvey(String surveyXMLFilePath){
@@ -120,12 +122,12 @@ public class SurveyModelTests {
 		assertEquals("Constraint Violated\nPlease try again.\nText Field Length\n(Length > 5 && < 10)", stringSurvey.getPrompt());
 	}
 
-	@Ignore
-	public void testAnswerGroupQuestion() throws JavaRosaException {
-
-		/* NOT YET IMPLEMENTED
-		assertEquals("Answering Group Q1", saveAnswerExtractResult("Answering Group Q1", "GroupQ1",groupSurvey));
-		*/
+	@Test
+	public void testCustomConstraintText() throws JavaRosaException {
+        simpleSurvey.answer("woo");
+        simpleSurvey.answer("woo");
+        simpleSurvey.answer("agggggggg");
+        assertEquals("The cow goes MOO!\nPlease try again.\nThe cow goes ... ?\n(must be 3 letters)", simpleSurvey.getPrompt());
 	}
 
 	@Test
