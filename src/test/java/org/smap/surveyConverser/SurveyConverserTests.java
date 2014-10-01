@@ -38,7 +38,7 @@ public class SurveyConverserTests {
 		subject.answerCurrentQuestion("yolo");
 
         // assert
-        assertEquals("Text Field Required\n[this is a required field]",
+        assertEquals("Text Field Required\n(this is a required field)",
                 subject.getCurrentQuestion());
 	}
 
@@ -53,7 +53,7 @@ public class SurveyConverserTests {
 		converser = SurveyConverser.resume(saved);
 
         // assert
-		assertEquals("Text Field Required\n[this is a required field]",
+		assertEquals("Text Field Required\n(this is a required field)",
 				converser.getCurrentQuestion());
 	}
 
@@ -86,7 +86,7 @@ public class SurveyConverserTests {
     @Test
     public void testBeginDialogueSendsMessage() {
         // arrange
-        String expectedReply = "Text Field Vanilla\n[no restrictions on this field]";
+        String expectedReply = "Text Field Vanilla\n(no restrictions on this field)";
 
         // act
         SurveyConverser.beginDialogue(handler);
