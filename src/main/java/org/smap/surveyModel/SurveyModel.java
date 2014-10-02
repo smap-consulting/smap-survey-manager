@@ -33,16 +33,16 @@ import java.util.ArrayList;
 
 public class SurveyModel{
 	public enum SurveyAction{forward, backward, stay, end, start,into,retry};
-	
+
 	private FormController formController;
 	private FormDef formDef;
 	private ISurveyEvent currentEvent;
-	private final String xFormXml; 
-	
+	private final String xFormXml;
+
 	public static SurveyModel createSurveyModelFromXform(String xformXML){
 		return new SurveyModel(xformXML);
 	}
-	
+
 	/**
 	 * Construct a suvey model given xform xml
 	 * @param xformXML
@@ -54,11 +54,11 @@ public class SurveyModel{
 		this.formController = initFormController(formDef,null);
 		jumpToFirstAnswerableQuestion();
 	}
-	
+
 	public static SurveyModel resumeSurveyModel(String xformXML, String savedInstanceXML, FormIndex index){
 		return new SurveyModel(xformXML, savedInstanceXML, index);
 	}
-	
+
 	/**
 	 * Reload an existing survey instance
 	 * @param xformXML
@@ -72,11 +72,11 @@ public class SurveyModel{
 		this.formController.jumpToIndex(index);
 		this.setCurrentEvent();
 	}
-	
+
 	public String getInitialFormDefXML(){
 		return xFormXml;
 	}
-	
+
 	/**
 	 * Returns the prompt text for the current event
 	 * @return
@@ -84,17 +84,17 @@ public class SurveyModel{
 	public String getPrompt(){
 		return currentEvent.getPromptText();
 	}
-	
+
 	public String getSurveyName(){
 		return formDef.getName();
 	}
-	
+
 	public void answer(String answerText){
 		processAction(currentEvent.answer(answerText));
 		//currentEvent.answer(answerText);
 
 	}
-	
+
 	public void processAction(SurveyAction action){
 		switch(action){
 			case forward:
@@ -104,43 +104,43 @@ public class SurveyModel{
 				break;
 		}
 	}
-	
+
 	private FormController initFormController(FormDef formDef, String savedInstanceXML) {
 		FormEntryModel formEntryModel = new FormEntryModel(formDef);
 		FormEntryController formEntryController = new FormEntryController(formEntryModel);
-		
+
 		if(savedInstanceXML != null){
 			loadSavedInstance(savedInstanceXML, formEntryController);
 		}
-		
+
 		formEntryController.setLanguage(getLocale(0));
 		formEntryController.jumpToIndex(FormIndex.createBeginningOfFormIndex());
 		FormController formController = new FormController(null, formEntryController, null);
 		return formController;
 	}
-	
+
 	private String getLocale(int index) {
 		return this.formDef.getLocalizer().getAvailableLocales()[index];
 	}
-	
+
 	public FormIndex getCurrentIndex() {
 		return formController.getCaptionPrompt().getIndex();
 	}
-	
+
 	private FormDef createFormDef(String xformXML){
 		InputStream inputStream = FileUtils.convertStringToInputStream(xformXML);
 		return XFormUtils.getFormFromInputStream(inputStream);
 	}
-	
+
 	private void jumpToFirstAnswerableQuestion(){
 		getFormController().jumpToIndex(FormIndex.createBeginningOfFormIndex());
 		if(!formController.currentPromptIsQuestion())
 			jumpToNextEvent();
 		setCurrentEvent();
 	}
-	
+
 	/**
-	 *Steps to the next event,but will skip over repeats 
+	 *Steps to the next event,but will skip over repeats
 	 */
 	public void jumpToNextEvent(){
 		try {
@@ -151,7 +151,7 @@ public class SurveyModel{
 		}
 		setCurrentEvent();
 	}
-	
+
 	private void setCurrentEvent(){
 		if(isGroup())
 			currentEvent=new GroupEvent(formController);
@@ -161,16 +161,16 @@ public class SurveyModel{
 			currentEvent=new RepeatEvent(formController);
 		else currentEvent=null;
 	}
-	
+
 	public void stepIntoRepeat(){
 		formController.newRepeat();
 		jumpToNextEvent();
 	}
-	
+
 	private boolean isGroup(){
 		return formController.getEvent() == FormEntryController.EVENT_GROUP;
 	}
-	
+
 	private boolean isQuestion(){
 		return formController.getEvent() == FormEntryController.EVENT_QUESTION;
 	}
@@ -180,25 +180,25 @@ public class SurveyModel{
 			formController.getEvent() == FormEntryController.EVENT_PROMPT_NEW_REPEAT ||
 			formController.getEvent() == FormEntryController.EVENT_REPEAT_JUNCTURE;
 	}
-	
+
 	public boolean isEndOfSurvey(){
 		return formController.getEvent() == FormEntryController.EVENT_END_OF_FORM;
 	}
-	
+
 	public ISurveyEvent getCurrentEvent(){
 		return currentEvent;
 	}
-	
+
 	public String getEventInfo(){
 		StringBuilder sb = new StringBuilder(currentEvent.info());
 		return sb.toString();
 	}
-	
+
 	public String[] getFullQuestionPromptList(){
 		ArrayList<String> questionList = new ArrayList<String>();
 		SurveyModel model = this;
 		model.jumpToFirstAnswerableQuestion();
-		
+
 		while(!model.isEndOfSurvey()){
 			ISurveyEvent event = model.getCurrentEvent();
 			questionList.add(model.getCurrentEvent().getPromptText());
@@ -207,10 +207,10 @@ public class SurveyModel{
 			}else
 				model.jumpToNextEvent();
 		}
-		String[] returnArray = new String[questionList.size()]; 
+		String[] returnArray = new String[questionList.size()];
 		return questionList.toArray(returnArray);
 	}
-	
+
 	public String byteArrayToString(ByteArrayPayload bap){
 		ByteArrayOutputStream baos = null;
 		String str=null;
@@ -226,18 +226,18 @@ public class SurveyModel{
 		}
 		return str;
 	}
-	
+
 	/**Sets the endTime metadata (and other actions if set in jr:preload)
 	 * @return
 	 */
 	public boolean setFinalMetadata(){
 		return formController.postProcessInstance();
 	}
-	
+
 	public FormController getFormController(){
 		return formController;
 	}
-	
+
 	public String getAnsweredXML(){
 		int SIZEOF_UNWANTED_DATA = 4;
 		try {
@@ -246,18 +246,36 @@ public class SurveyModel{
 			return null;
 		}
 	}
-	
-	
-	
-    /**  
+
+    public int getCurrentQuestionNumber(FormIndex index) {
+        int count = 1;
+        SurveyModel model = this;
+        model.jumpToFirstAnswerableQuestion();
+
+        while(indexesEqual(index,this.getCurrentIndex()) && !model.isEndOfSurvey()) {
+            ISurveyEvent event = model.getCurrentEvent();
+            if(event instanceof RepeatEvent && ((RepeatEvent) event).getRepeatCount() == 0){
+                model.stepIntoRepeat();
+            }else
+                model.jumpToNextEvent();
+            count++;
+        }
+        return count;
+    }
+
+    private boolean indexesEqual(FormIndex a, FormIndex b){
+        return a.getReference().toString().compareTo(b.getReference().toString())!=0;
+    }
+
+    /**
      * Resumes a saved survey
-     * 
+     *
      * Modified from code by:
      * @author Carl Hartung (carlhartung@gmail.com)
      * @author Yaw Anokwa (yanokwa@gmail.com)
-     * 
+     *
      * From ODKCollect: FormLoaderTask.java
-     * 
+     *
      * @author Scott
      * @param instanceFile
      * @param fec
@@ -266,7 +284,7 @@ public class SurveyModel{
     private boolean loadSavedInstance(String instanceXML, FormEntryController fec) {
         // convert instance into a byte array
         byte[] fileBytes = instanceXML.getBytes(Charset.forName("UTF-8"));
-        
+
         // get the root of the saved and template instances
         TreeElement savedRoot = XFormParser.restoreDataModel(fileBytes,null).getRoot();
         TreeElement templateRoot = fec.getModel().getForm().getInstance().getRoot().deepCopy(true);
@@ -279,18 +297,18 @@ public class SurveyModel{
             // populate the data model
             TreeReference tr = TreeReference.rootRef();
             tr.add(templateRoot.getName(), TreeReference.INDEX_UNBOUND);
-            
-            
+
+
             /*
              * Saves select choices, heavily coupled to andriod/collect.
-             * TODO add select functionality 
-             * 
+             * TODO add select functionality
+             *
             // Here we set the Collect's implementation of the IAnswerResolver.
             // We set it back to the default after select choices have been populated.
             XFormParser.setAnswerResolver(new ExternalAnswerResolver());
             templateRoot.populate(savedRoot, fec.getModel().getForm());
             */
-            
+
             XFormParser.setAnswerResolver(new DefaultAnswerResolver());
             templateRoot.populate(savedRoot, fec.getModel().getForm());
             // populated model to current form

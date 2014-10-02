@@ -119,7 +119,7 @@ public class SurveyModelTests {
 		stringSurvey.answer("Plain String");
 		stringSurvey.answer("Answer Required");
 		stringSurvey.answer("1234");
-		assertEquals("Constraint Violated\nPlease try again.\nText Field Length\n(Length > 5 && < 10)", stringSurvey.getPrompt());
+		assertEquals("Text Field Length\nPlease try again.\nText Field Length\n(Length > 5 && < 10)", stringSurvey.getPrompt());
 	}
 
 	@Test
@@ -129,6 +129,24 @@ public class SurveyModelTests {
         simpleSurvey.answer("agggggggg");
         assertEquals("The cow goes MOO!\nPlease try again.\nThe cow goes ... ?\n(must be 3 letters)", simpleSurvey.getPrompt());
 	}
+
+    @Test
+    public void testQuestionNumberProgress() throws JavaRosaException {
+        simpleSurvey.answer("woo");
+        simpleSurvey.answer("woo");
+        simpleSurvey.answer("agggggggg");
+        FormIndex index = simpleSurvey.getCurrentIndex();
+        int questionNum = simpleSurvey.getCurrentQuestionNumber(index);
+        assertEquals(3,questionNum);
+    }
+
+    @Test
+    public void testQuestionNumberProgress_First() throws JavaRosaException {
+        simpleSurvey.answer("woo");
+        FormIndex index = simpleSurvey.getCurrentIndex();
+        int questionNum = simpleSurvey.getCurrentQuestionNumber(index);
+        assertEquals(2,questionNum);
+    }
 
 	@Test
 	public void testQuestionEventType() throws JavaRosaException {

@@ -1,1 +1,9 @@
-<?xml version='1.0' ?><data namespace='hello' id='build_String-only-form_1406426192'><meta><instanceID /></meta><textFieldVanilla>Plain String</textFieldVanilla><textFieldRequired>Answer Required</textFieldRequired><textFieldLength /></data>
+<?xml version='1.0' ?>
+<data id='build_String-only-form_1406426192' namespace='hello'>
+    <meta>
+        <instanceID />
+    </meta>
+    <textFieldVanilla>Plain String</textFieldVanilla>
+    <textFieldRequired>Answer Required</textFieldRequired>
+    <textFieldLength />
+</data>
