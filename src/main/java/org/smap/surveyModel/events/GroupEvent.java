@@ -1,23 +1,21 @@
 package org.smap.surveyModel.events;
 
+import org.javarosa.core.model.FormIndex;
 import org.odk.FormController;
-import org.smap.surveyModel.SurveyModel;
 import org.smap.surveyModel.SurveyModel.SurveyAction;
 
 
-public class GroupEvent implements ISurveyEvent {
-
-	final private FormController formController;
+public class GroupEvent extends SurveyEvent {
 
 	public GroupEvent(FormController formController){
-		this.formController = formController;
+        super(formController);
 	}
-	
+
 	public String getPromptText() {
 		return formController.getLastGroupText();
 	}
 
-	@Override
+    @Override
 	public SurveyAction answer(String answerText) {
 		return SurveyAction.forward;
 	}

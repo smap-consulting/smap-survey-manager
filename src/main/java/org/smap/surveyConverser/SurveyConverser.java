@@ -8,7 +8,7 @@ import org.smap.SurveyConversation;
 import org.smap.surveyModel.SurveyModel;
 import org.smap.surveyModel.utils.JRSerializer;
 
-public class SurveyConverser implements SurveyConversation {
+public class SurveyConverser implements SurveyConversation{
 
 	private SurveyModel surveyModel;
 
@@ -26,7 +26,8 @@ public class SurveyConverser implements SurveyConversation {
         SurveyConverser converser = createNewSurveyConverser(handler.getFormXml());
 
         handler.recordSurveyDetails(converser);
-        handler.saveData(converser.save(), converser.getAnswers());
+
+        handler.saveData(converser.save(), converser.getAnswers(), converser.getQuestionNumber());
 
         handler.reply(converser.getCurrentQuestion());
     }
@@ -39,7 +40,8 @@ public class SurveyConverser implements SurveyConversation {
         if (! converser.isComplete()) {
             handler.reply(converser.getCurrentQuestion());
         }
-        handler.saveData(converser.save(), converser.getAnswers());
+        handler.saveData(converser.save(), converser.getAnswers(), converser.getQuestionNumber());
+
         handler.recordSurveyDetails(converser);
 
         if (converser.isComplete()) {
@@ -50,6 +52,10 @@ public class SurveyConverser implements SurveyConversation {
 	public String save() {
 		return JRSerializer.serializeSurveyModel(this.surveyModel);
 	}
+
+    public int getQuestionNumber(){
+        return surveyModel.getCurrentQuestionNumber();
+    }
 
 	private SurveyConverser(SurveyModel surveyModel) {
 		this.surveyModel = surveyModel;

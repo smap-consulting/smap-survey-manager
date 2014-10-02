@@ -1,5 +1,6 @@
 package org.smap.surveyModel.events;
 
+import org.javarosa.core.model.FormIndex;
 import org.javarosa.core.model.data.AnswerDataFactory;
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.core.model.data.UncastData;
@@ -15,15 +16,14 @@ import org.smap.surveyModel.utils.SurveyMessageConstants;
 
 
 
-public class QuestionEvent implements ISurveyEvent {
+public class QuestionEvent extends SurveyEvent {
 
-	private FormController formController;
 	private boolean invalidAnswerProvided;
 	private String invalidAnswerMessage;
 	private QuestionType question;
 
 	public QuestionEvent(FormController formController){
-		this.formController = formController;
+        super(formController);
 		this.invalidAnswerProvided = false;
 		try {
 			this.question = QuestionTypeFactory.getQuestionType(formController);
@@ -42,7 +42,7 @@ public class QuestionEvent implements ISurveyEvent {
 		return sb.toString();
 	}
 
-	public SurveyAction answer(String answerText){
+    public SurveyAction answer(String answerText){
 		int answerResult=0;
 
 		try{
@@ -83,6 +83,7 @@ public class QuestionEvent implements ISurveyEvent {
 	public IAnswerData getAnswerContainer(){
 		return AnswerDataFactory.templateByDataType(formController.getQuestionPrompt().getControlType());
 	}
+
 
 	public String info() {
 		StringBuilder sb = new StringBuilder("Event Type: Question\n");

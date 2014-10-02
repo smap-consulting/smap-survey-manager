@@ -7,6 +7,7 @@ import org.smap.DialogueHandler;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -80,7 +81,7 @@ public class SurveyConverserTests {
 
         // assert
         verify(handler, atLeastOnce())
-                .saveData(anyString(), anyString());
+                .saveData(anyString(), anyString(),anyInt());
     }
 
     @Test

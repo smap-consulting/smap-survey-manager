@@ -133,18 +133,21 @@ public class SurveyModelTests {
     @Test
     public void testQuestionNumberProgress() throws JavaRosaException {
         simpleSurvey.answer("woo");
-        simpleSurvey.answer("woo");
-        simpleSurvey.answer("agggggggg");
-        FormIndex index = simpleSurvey.getCurrentIndex();
-        int questionNum = simpleSurvey.getCurrentQuestionNumber(index);
+        simpleSurvey.answer("hoo");
+        int questionNum = simpleSurvey.getCurrentQuestionNumber();
         assertEquals(3,questionNum);
     }
 
     @Test
     public void testQuestionNumberProgress_First() throws JavaRosaException {
-        simpleSurvey.answer("woo");
-        FormIndex index = simpleSurvey.getCurrentIndex();
-        int questionNum = simpleSurvey.getCurrentQuestionNumber(index);
+        int questionNum = simpleSurvey.getCurrentQuestionNumber();
+        assertEquals(1,questionNum);
+    }
+
+    @Test
+    public void testQuestionNumberProgress_Second() throws JavaRosaException {
+        simpleSurvey.answer("hoo");
+        int questionNum = simpleSurvey.getCurrentQuestionNumber();
         assertEquals(2,questionNum);
     }
 

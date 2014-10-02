@@ -13,7 +13,7 @@ public interface DialogueHandler {
      * @param data serialized SurveyConverser
      * @param answers raw instance javarose xml
      */
-    public void saveData(String data, String answers);
+    public void saveData(String data, String answers, int questionNumber);
 
     /**
      * @return get last answerfrom user

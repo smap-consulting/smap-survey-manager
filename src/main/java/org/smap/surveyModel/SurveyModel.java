@@ -1,5 +1,7 @@
 package org.smap.surveyModel;
 
+import com.google.common.collect.AbstractIterator;
+
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
 import org.javarosa.core.model.instance.TreeElement;
@@ -14,7 +16,7 @@ import org.odk.FileUtils;
 import org.odk.FormController;
 import org.odk.JavaRosaException;
 import org.smap.surveyModel.events.GroupEvent;
-import org.smap.surveyModel.events.ISurveyEvent;
+import org.smap.surveyModel.events.SurveyEvent;
 import org.smap.surveyModel.events.QuestionEvent;
 import org.smap.surveyModel.events.RepeatEvent;
 
@@ -22,21 +24,46 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * @author Scott Wells
  *
  */
 
-public class SurveyModel{
-	public enum SurveyAction{forward, backward, stay, end, start,into,retry};
+public class SurveyModel implements Iterable<SurveyEvent>{
+    @Override
+    public Iterator<SurveyEvent> iterator() {
+        return new AbstractIterator<SurveyEvent>() {
+            private final SurveyModel model = new SurveyModel(xFormXml);
+            private boolean first = true;
+
+            @Override
+            protected SurveyEvent computeNext() {
+                if(first){
+                    first=false;
+                    return model.getCurrentEvent();
+                }
+                SurveyEvent event = model.getCurrentEvent();
+                if(event instanceof RepeatEvent && ((RepeatEvent) event).getRepeatCount() == 0){
+                    model.stepIntoRepeat();
+                }else
+                    model.jumpToNextEvent();
+                if(model.isEndOfSurvey())
+                    return endOfData();
+                return model.getCurrentEvent();
+            }
+        };
+    }
+
+    public enum SurveyAction{forward, backward, stay, end, start,into,retry};
 
 	private FormController formController;
 	private FormDef formDef;
-	private ISurveyEvent currentEvent;
+	private SurveyEvent currentEvent;
 	private final String xFormXml;
 
 	public static SurveyModel createSurveyModelFromXform(String xformXML){
@@ -62,7 +89,7 @@ public class SurveyModel{
 	/**
 	 * Reload an existing survey instance
 	 * @param xformXML
-	 * @param savedInstancePath
+	 * @param savedInstanceXML
 	 */
 	private SurveyModel(String xformXML, String savedInstanceXML, FormIndex index){
 		this.xFormXml=xformXML;
@@ -185,30 +212,13 @@ public class SurveyModel{
 		return formController.getEvent() == FormEntryController.EVENT_END_OF_FORM;
 	}
 
-	public ISurveyEvent getCurrentEvent(){
+	public SurveyEvent getCurrentEvent(){
 		return currentEvent;
 	}
 
 	public String getEventInfo(){
 		StringBuilder sb = new StringBuilder(currentEvent.info());
 		return sb.toString();
-	}
-
-	public String[] getFullQuestionPromptList(){
-		ArrayList<String> questionList = new ArrayList<String>();
-		SurveyModel model = this;
-		model.jumpToFirstAnswerableQuestion();
-
-		while(!model.isEndOfSurvey()){
-			ISurveyEvent event = model.getCurrentEvent();
-			questionList.add(model.getCurrentEvent().getPromptText());
-			if(event instanceof RepeatEvent && ((RepeatEvent) event).getRepeatCount() == 0){
-				model.stepIntoRepeat();
-			}else
-				model.jumpToNextEvent();
-		}
-		String[] returnArray = new String[questionList.size()];
-		return questionList.toArray(returnArray);
 	}
 
 	public String byteArrayToString(ByteArrayPayload bap){
@@ -247,24 +257,30 @@ public class SurveyModel{
 		}
 	}
 
-    public int getCurrentQuestionNumber(FormIndex index) {
-        int count = 1;
-        SurveyModel model = this;
-        model.jumpToFirstAnswerableQuestion();
+    public String[] getFullQuestionPromptList(){
+        ArrayList<String> questionList = new ArrayList<String>();
+        for (SurveyEvent event : this) {
+            questionList.add(event.getPromptText());
+        }
+        String[] returnArray = new String[questionList.size()];
+        return questionList.toArray(returnArray);
+    }
 
-        while(indexesEqual(index,this.getCurrentIndex()) && !model.isEndOfSurvey()) {
-            ISurveyEvent event = model.getCurrentEvent();
-            if(event instanceof RepeatEvent && ((RepeatEvent) event).getRepeatCount() == 0){
-                model.stepIntoRepeat();
-            }else
-                model.jumpToNextEvent();
+    public int getCurrentQuestionNumber() {
+        FormIndex index = this.getCurrentIndex();
+        int count = 0;
+        for (SurveyEvent event : this) {
             count++;
+
+            if(index.getLocalReference()!=null && indexesEqual(event.getIndex(),index)) {
+                return count;
+            }
         }
         return count;
     }
 
     private boolean indexesEqual(FormIndex a, FormIndex b){
-        return a.getReference().toString().compareTo(b.getReference().toString())!=0;
+        return a.getLocalReference().toString().compareTo(b.getLocalReference().toString())==0;
     }
 
     /**
@@ -277,7 +293,7 @@ public class SurveyModel{
      * From ODKCollect: FormLoaderTask.java
      *
      * @author Scott
-     * @param instanceFile
+     * @param instanceXML
      * @param fec
      * @return
      */
