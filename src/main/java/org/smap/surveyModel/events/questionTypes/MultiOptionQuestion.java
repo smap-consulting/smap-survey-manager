@@ -7,15 +7,16 @@ import org.odk.FormController;
 import org.smap.surveyModel.utils.SMSConstants;
 
 public abstract class MultiOptionQuestion extends QuestionTypeImpl {
-	
+
 	public MultiOptionQuestion(FormController formController){
 		super(formController);
 	}
-	
+
 	public String getQuestionText(){
-		return getQuestionText()+"\n"+getSelectChoicesString();
+		return super.getQuestionText()
+                +"\n"+getSelectChoicesString();
 	}
-	
+
 	public String getSelectChoicesString(){
 		Vector<SelectChoice> selectChoices = super.getFormEntryPrompt().getSelectChoices();
 		StringBuilder sb = new StringBuilder();
