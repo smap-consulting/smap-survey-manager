@@ -1,0 +1,73 @@
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa">
+  <h:head>
+    <h:title>SMAP Demo A</h:title>
+    <model>
+      <instance>
+        <data id="build_SMAP-Demo-A_1412309253">
+          <meta>
+            <instanceID/>
+          </meta>
+          <Q1/>
+          <Q2/>
+          <Q3/>
+        </data>
+      </instance>
+      <itext>
+        <translation lang="eng">
+          <text id="/data/Q1:label">
+            <value>Welcome! What is your Name?</value>
+          </text>
+          <text id="/data/Q1:hint">
+            <value></value>
+          </text>
+          <text id="/data/Q1:constraintMsg">
+            <value>Welcome! What is your Name?</value>
+          </text>
+          <text id="/data/Q2:label">
+            <value>Try answering with a Number</value>
+          </text>
+          <text id="/data/Q3:label">
+            <value>Are you:</value>
+          </text>
+          <text id="/data/Q3:option0">
+            <value>Cool</value>
+          </text>
+          <text id="/data/Q3:option1">
+            <value>Chill</value>
+          </text>
+          <text id="/data/Q3:option2">
+            <value>Jelly</value>
+          </text>
+        </translation>
+      </itext>
+      <bind nodeset="/data/meta/instanceID" type="string" readonly="true()" calculate="concat('uuid:', uuid())"/>
+      <bind nodeset="/data/Q1" type="string" required="true()" jr:constraintMsg="jr:itext('/data/Q1:constraintMsg')"/>
+      <bind nodeset="/data/Q2" type="int"/>
+      <bind nodeset="/data/Q3" type="select1"/>
+    </model>
+  </h:head>
+  <h:body>
+    <input ref="/data/Q1">
+      <label ref="jr:itext('/data/Q1:label')"/>
+      <hint ref="jr:itext('/data/Q1:hint')"/>
+    </input>
+    <input ref="/data/Q2">
+      <label ref="jr:itext('/data/Q2:label')"/>
+    </input>
+    <select1 ref="/data/Q3">
+      <label ref="jr:itext('/data/Q3:label')"/>
+      <item>
+        <label ref="jr:itext('/data/Q3:option0')"/>
+        <value>0</value>
+      </item>
+      <item>
+        <label ref="jr:itext('/data/Q3:option1')"/>
+        <value>1</value>
+      </item>
+      <item>
+        <label ref="jr:itext('/data/Q3:option2')"/>
+        <value>2</value>
+      </item>
+    </select1>
+  </h:body>
+</h:html>

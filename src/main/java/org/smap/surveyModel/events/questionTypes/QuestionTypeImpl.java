@@ -23,7 +23,7 @@ public class QuestionTypeImpl implements QuestionType {
 	}
 
 	private FormEntryPrompt formEntryPrompt;
-	
+
 	public QuestionTypeImpl(FormController formController){
 		this.formController = formController;
 		this.formEntryPrompt = formController.getQuestionPrompt();
@@ -32,21 +32,29 @@ public class QuestionTypeImpl implements QuestionType {
 	public String info() {
 		return "Question Type:" + getQuestionTypeString();
 	}
-	
+
 	public String getQuestionTypeString(){
 		return "Generic Question";
 	}
-	
+
 	public String getPrompt() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getQuestionText());
-		if(formEntryPrompt.getHelpText()!=null){
+		if(hasHelpText())
+        {
 			sb.append(SMSConstants.NEWLINE);
-			sb.append(SMSConstants.PRE_HINT+formEntryPrompt.getHelpText()+SMSConstants.POST_HINT);
+            sb.append(SMSConstants.PRE_HINT +
+                    formEntryPrompt.getHelpText() +
+                    SMSConstants.POST_HINT);
 		}
 		return sb.toString();
 	}
-	
+
+    private boolean hasHelpText(){
+        return formEntryPrompt.getHelpText()!=null
+                && formEntryPrompt.getHelpText().compareTo("")!=0;
+    }
+
 	protected String getQuestionText(){
 		return formEntryPrompt.getShortText();
 	}

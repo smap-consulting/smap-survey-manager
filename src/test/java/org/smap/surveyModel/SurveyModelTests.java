@@ -195,11 +195,20 @@ public class SurveyModelTests {
 		assertEquals(stringSurvey.getPrompt(),newSurvey.getPrompt());
 	}
 
+    @Test
+    public void noHelpTextTest(){
+        SurveyModel newModel = SurveyModel.createSurveyModelFromXform(readFile("data/basic.xml"));
+        assertEquals("Welcome! What is your Name?",newModel.getPrompt());
+    }
+
+
 	private String saveAnswerExtractResult(String answer, String tagName, SurveyModel model) throws JavaRosaException{
 		model.answer(answer);
 		String answeredXML = model.getAnsweredXML();
 		return AnswerValidator.getFirstValueFromTag(answeredXML, tagName);
 	}
+
+
 
 	private void logXML(){
 		System.out.println(stringSurvey.getAnsweredXML());
