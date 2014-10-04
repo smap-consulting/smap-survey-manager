@@ -201,6 +201,21 @@ public class SurveyModelTests {
         assertEquals("Welcome! What is your Name?",newModel.getPrompt());
     }
 
+    @Test
+    public void answerNumericQuestion_invalid(){
+        SurveyModel newModel = SurveyModel.createSurveyModelFromXform(readFile("data/SMAP Demo A.xml"));
+        newModel.answer("Answer One");
+        newModel.answer("F");
+        assertEquals(newModel.getCurrentQuestionNumber(),2);
+    }
+
+    @Test
+    public void answerNumericQuestion_valid(){
+        SurveyModel newModel = SurveyModel.createSurveyModelFromXform(readFile("data/SMAP Demo A.xml"));
+        newModel.answer("Answer One");
+        newModel.answer("200");
+        assertEquals(newModel.getCurrentQuestionNumber(),3);
+    }
 
 	private String saveAnswerExtractResult(String answer, String tagName, SurveyModel model) throws JavaRosaException{
 		model.answer(answer);

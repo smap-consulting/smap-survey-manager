@@ -105,7 +105,7 @@ public class QuestionTypeImpl implements QuestionType {
         return SurveyModel.SurveyAction.forward;
     }
 
-    private void flagInvalidAnswer(String message){
+     protected void flagInvalidAnswer(String message){
         invalidAnswerProvided = true;
         invalidAnswerMessage = message;
     }

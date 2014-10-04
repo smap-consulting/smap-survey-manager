@@ -12,7 +12,7 @@ public class QuestionTypeFactory {
 		case Constants.DATATYPE_TEXT:
 			return new StringQuestion(formController);
 		case Constants.DATATYPE_INTEGER:
-			return new StringQuestion(formController);
+			return new NumericQuestion(formController);
 		case Constants.DATATYPE_CHOICE:
 			return new SingleOptionQuestion(formController);
 		case Constants.DATATYPE_CHOICE_LIST:
