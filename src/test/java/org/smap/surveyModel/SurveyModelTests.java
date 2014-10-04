@@ -197,7 +197,7 @@ public class SurveyModelTests {
 
     @Test
     public void noHelpTextTest(){
-        SurveyModel newModel = SurveyModel.createSurveyModelFromXform(readFile("data/basic.xml"));
+        SurveyModel newModel = SurveyModel.createSurveyModelFromXform(readFile("data/SMAP Demo A.xml"));
         assertEquals("Welcome! What is your Name?",newModel.getPrompt());
     }
 
